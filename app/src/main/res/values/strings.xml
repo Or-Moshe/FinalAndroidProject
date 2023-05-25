@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">FinalAndroidProject</string>
+    <string name="welcome">Welcome to my app</string>
+    <string name="mobile_num">Mobile Num</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="signup">signup</string>
+
+    <!-- Error messages-->
+    <string name="enter_email">Please Enter email</string>
+    <string name="enter_password">Please Enter password</string>
+    <string name="auth_failed">Authentication Failed</string>
+
+    <!-- Succeed messages-->
+    <string name="acc_created">Account Created</string>
 </resources>
