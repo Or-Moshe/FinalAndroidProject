@@ -1,14 +1,11 @@
 package com.example.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
 
-import com.example.finalproject.Adapters.LoginAdapter;
+import com.example.finalproject.Adapters.LoginFragmentsAdapter;
 import com.example.finalproject.Fragments.LoginTabFragment;
 import com.example.finalproject.Fragments.SignupTabFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private FloatingActionButton googleBtn;
-    private LoginAdapter loginAdapter;
+    private LoginFragmentsAdapter loginAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         findViews();
 
 
-        loginAdapter = new LoginAdapter(getSupportFragmentManager(), getLifecycle());
+        loginAdapter = new LoginFragmentsAdapter(getSupportFragmentManager(), getLifecycle());
 
         // add Fragments in your ViewPagerFragmentAdapter class
         loginAdapter.addFragment(new LoginTabFragment());
