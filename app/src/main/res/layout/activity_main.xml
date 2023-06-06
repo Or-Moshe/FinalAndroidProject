@@ -37,12 +37,19 @@
                 android:theme="?attr/actionBarTheme"
                 app:navigationIcon="@drawable/menu_icon" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager"
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:id="@+id/view_pager"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--            </androidx.viewpager2.widget.ViewPager2>-->
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+            </FrameLayout>
 
-            </androidx.viewpager2.widget.ViewPager2>
         </LinearLayout>
 
 

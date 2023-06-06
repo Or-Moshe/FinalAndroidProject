@@ -60,6 +60,7 @@ public class SignupTabFragment extends Fragment {
                                 if(task.isSuccessful()){
                                     Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
                                     progressIndicator.setVisibility(View.GONE);
+
                                 }else{
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }

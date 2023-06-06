@@ -5,9 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.WorksFormFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_LST_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="works form" />
+        android:layout_centerInParent="true"
+        tools:listitem="@layout/work_item" />
 
 </FrameLayout>

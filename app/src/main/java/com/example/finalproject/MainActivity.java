@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.finalproject.Adapters.ContentsFragmentsAdapter;
@@ -40,14 +41,19 @@ public class MainActivity extends AppCompatActivity  {
         toggle.syncState();
 
         /*-----------------Contents Fragments----------------------*/
-        adapter = new ContentsFragmentsAdapter(getSupportFragmentManager(), getLifecycle());
+        /*adapter = new ContentsFragmentsAdapter(getSupportFragmentManager(), getLifecycle());
 
         // add Fragments to Adapter
         adapter.addFragment(new NewWorkFormFragment());
         adapter.addFragment(new WorksFormFragment());
 
         // Setting Adapter to viewPager
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(adapter);*/
+
+        // Begin the transaction
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.frame_layout, new NewWorkFormFragment())
+            .commit();
 
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             setFragment(menuItem);
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity  {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
-        viewPager = findViewById(R.id.view_pager);
+        //viewPager = findViewById(R.id.view_pager);
     }
 
 
