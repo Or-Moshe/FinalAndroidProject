@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="input_int" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">#ECEFF3</item> <!-- Set your desired background color -->
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontWeight">600</item>
+        <item name="android:radius">17dp</item>
+        <item name="android:backgroundTint">#ECEFF3</item>
+        <item name="android:height">50dp</item>
+<!--        <item name="android:layout_marginHorizontal">20dp</item>-->
+    </style>
+
+    <style name="text_view" >
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#A5AAB0</item>
+    </style>
+</resources>

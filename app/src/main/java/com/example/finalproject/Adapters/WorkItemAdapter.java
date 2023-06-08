@@ -47,7 +47,7 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
         holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }
 
-    public void updateMovies(/*ArrayList<WorkItem> workItems*/ Map<Integer, WorkItem> workItemsMap) {
+    public void updateWorkItemsMap(/*ArrayList<WorkItem> workItems*/ Map<Integer, WorkItem> workItemsMap) {
         //this.workItems = workItems;
         this.workItemsMap = workItemsMap;
         notifyDataSetChanged();

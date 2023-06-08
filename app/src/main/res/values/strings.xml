@@ -29,4 +29,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="customer_name">Customer Name</string>
     <string name="address">address</string>
+    <string name="duration_of_time">duration of time</string>
+    <string name="type_of_work">type of work</string>
+    <string name="price">price</string>
+    <string name="new_customer">new customer</string>
+    <string name="street">street</string>
+    <string name="city">city</string>
+    <string name="comment">comment</string>
+    <string name="confirm">confirm</string>
+    <string name="hours">hours</string>
+    <string name="minutes">minutes</string>
 </resources>

@@ -1,12 +1,16 @@
 package com.example.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +22,7 @@ import com.example.finalproject.Adapters.ContentsFragmentsAdapter;
 import com.example.finalproject.Fragments.NewWorkFormFragment;
 import com.example.finalproject.Fragments.WorksFormFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity  {
     private DrawerLayout drawerLayout;
@@ -79,11 +84,19 @@ public class MainActivity extends AppCompatActivity  {
             //viewPager.setCurrentItem(1);
             replaceFragment(R.id.frame_layout, new WorksFormFragment());
         }
+        else if(menuItem.getItemId() == R.id.nav_login) {
+            //viewPager.setCurrentItem(1);
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
         else{
             Log.e("Error", "onCreate: ", new Throwable("nav clicked not handled"));
         }
         drawerLayout.closeDrawer(GravityCompat.START);
     }
+
+
 
     private void replaceFragment(Integer frameLayout, Fragment fragment){
         getSupportFragmentManager().beginTransaction()
