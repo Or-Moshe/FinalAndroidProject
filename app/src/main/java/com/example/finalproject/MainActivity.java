@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -51,9 +52,7 @@ public class MainActivity extends AppCompatActivity  {
         viewPager.setAdapter(adapter);*/
 
         // Begin the transaction
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.frame_layout, new NewWorkFormFragment())
-            .commit();
+        replaceFragment(R.id.frame_layout, new NewWorkFormFragment());
 
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             setFragment(menuItem);
@@ -73,15 +72,23 @@ public class MainActivity extends AppCompatActivity  {
 
     private void setFragment(MenuItem menuItem){
         if(menuItem.getItemId() == R.id.nav_create_new_work){
-            viewPager.setCurrentItem(0);
+            //viewPager.setCurrentItem(0);
+            replaceFragment(R.id.frame_layout, new NewWorkFormFragment());
         }
         else if(menuItem.getItemId() == R.id.nav_my_works) {
-            viewPager.setCurrentItem(1);
+            //viewPager.setCurrentItem(1);
+            replaceFragment(R.id.frame_layout, new WorksFormFragment());
         }
         else{
             Log.e("Error", "onCreate: ", new Throwable("nav clicked not handled"));
         }
         drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void replaceFragment(Integer frameLayout, Fragment fragment){
+        getSupportFragmentManager().beginTransaction()
+                .replace(frameLayout, fragment)
+                .commit();
     }
     private void findsViews() {
         drawerLayout = findViewById(R.id.drawer_layout);
