@@ -15,4 +15,8 @@
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">#A5AAB0</item>
     </style>
+
+    <style name="ll_horizontal" >
+        <item name="android:layout_marginVertical">5dp</item>
+    </style>
 </resources>

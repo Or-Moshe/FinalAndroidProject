@@ -17,13 +17,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp">
 
             <LinearLayout
+                android:theme="@style/ll_horizontal"
                 android:id="@+id/ll_drop_down_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,6 +68,7 @@
                     android:theme="@style/text_view" />
 
                 <LinearLayout
+                    android:theme="@style/ll_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/duration_estimated_txt2_view"
@@ -80,12 +82,19 @@
                         android:text="@string/hours"
                         android:theme="@style/text_view" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/input_int"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/edit_text_bg"
-                        android:text="00" />
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        style="@style/input_int"-->
+<!--                        android:layout_width="60dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:background="@drawable/edit_text_bg"-->
+<!--                        android:text="00" />-->
+
+                    <NumberPicker
+                        android:id="@+id/hours_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5" />
+
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -101,17 +110,24 @@
                             android:text="@string/minutes"
                             android:theme="@style/text_view" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/input_int"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@drawable/edit_text_bg"
-                            android:text="00" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            style="@style/input_int"-->
+<!--                            android:layout_width="60dp"-->
+<!--                            android:layout_height="60dp"-->
+<!--                            android:background="@drawable/edit_text_bg"-->
+<!--                            android:text="00" />-->
+
+                        <NumberPicker
+                            android:id="@+id/seconds_picker"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:theme="@style/ll_horizontal"
                 android:id="@+id/ll_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,6 +144,8 @@
                     style="@style/input_int"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789.,"
                     android:background="@drawable/edit_text_bg"
                     android:text="00" />
             </LinearLayout>
@@ -135,8 +153,9 @@
             <LinearLayout
                 android:id="@+id/ll_customer_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/ll_price"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -150,6 +169,7 @@
                     style="@style/input_int"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:background="@drawable/edit_text_bg"
                     android:iconifiedByDefault="false">
 
@@ -163,80 +183,101 @@
                 <!--            android:layout_below="@+id/search" />-->
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/checkbox"
+                    android:id="@+id/new_customer_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_customer" />
+                    android:text="@string/new_customer"
+                    android:theme="@style/text_view"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_customer"
+                android:id="@+id/ll_new_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_customer_name"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="0.2"
-                    android:background="@drawable/drop_down_bg"
-                    android:theme="@style/input_int" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/input_int"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.6"
-                    android:background="@drawable/edit_text_bg"
-                    android:text="00" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_customer"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/address"
-                    android:theme="@style/text_view" />
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:id="@+id/ll_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/input_int"
+                    <Spinner
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/edit_text_bg"
-                        android:hint="@string/street" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/input_int"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="0.2"
-                        android:background="@drawable/edit_text_bg"
-                        android:text="00" />
+                        android:background="@drawable/drop_down_bg"
+                        android:theme="@style/input_int" />
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/input_int"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:inputType="phone"
+                        android:background="@drawable/edit_text_bg" />
                 </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/input_int"
+                <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:id="@+id/ll_address"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edit_text_bg"
-                    android:hint="@string/city" />
+                    android:layout_below="@id/ll_phone"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address"
+                        android:theme="@style/text_view" />
+
+                    <LinearLayout
+                        android:theme="@style/ll_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/input_int"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="0.7"
+                            android:inputType="textAutoComplete"
+                            android:background="@drawable/edit_text_bg"
+                            android:hint="@string/street"
+                            />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/input_int"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:inputType="number"
+                            android:background="@drawable/edit_text_bg"
+                            android:hint="@string/number" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:theme="@style/ll_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/input_int"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textAutoComplete"
+                            android:background="@drawable/edit_text_bg"
+                            android:hint="@string/city" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -244,7 +285,7 @@
                 android:id="@+id/ll_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ll_address"
+                android:layout_below="@id/ll_new_customer"
                 android:orientation="vertical">
 
                 <TextView
@@ -262,12 +303,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:theme="@style/ll_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_comment">
 
                 <com.google.android.material.button.MaterialButton
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg"
                     android:hint="@string/confirm"
