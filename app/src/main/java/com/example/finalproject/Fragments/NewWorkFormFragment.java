@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,22 +24,34 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.finalproject.R;
+import com.example.finalproject.Utility.Helper;
 import com.example.finalproject.ViewModels.NewWorkFormViewModel;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.search.SearchBar;
 
 public class NewWorkFormFragment extends Fragment {
 
     private NewWorkFormViewModel mViewModel;
     private FrameLayout workTypeDropdownFrameLayout;
+    private Helper helper;
 
     /*SearchView search;
     private ListView listView;
     private String[] names = {"aaa", "vvv", "xxx"};
     private ArrayAdapter<String> arrayAdapter;*/
+
+    private MaterialCheckBox newCusCheckbox;
+    private LinearLayout llNewCustomer;
+    private Spinner workTypeDropdown, phoneDropdown;
+
+    public NewWorkFormFragment(){
+        helper = new Helper();
+    }
 
     public static NewWorkFormFragment newInstance() {
         return new NewWorkFormFragment();
@@ -50,28 +64,70 @@ public class NewWorkFormFragment extends Fragment {
         Log.d("TAG", "onCreateView: ");
         findViews(root);
 
-        //arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, names);
+        helper.setDropDown(getResources(), R.array.work_types_array, getContext(), workTypeDropdown, android.R.layout.simple_spinner_dropdown_item);
+        helper.setDropDown(getResources(), R.array.work_types_array, getContext(), phoneDropdown, android.R.layout.simple_spinner_dropdown_item);
 
-        DropDownFragment dropDownFragment = new DropDownFragment();
-        Bundle args = new Bundle();
-        args.putInt("array_res_id", R.array.work_types_array);
-        args.putInt("key_argument2", R.layout.fragment_drop_down);
-        dropDownFragment.setArguments(args);
+        setSpinnersListeners();
+        setCheckboxesListeners();
 
-       // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.work_type_dropdown_frame_layout, dropDownFragment).commit();
-//
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.work_types_array, android.R.layout.simple_spinner_item);
-//
-//        // Specify the layout to use when the list of choices appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//
-//        // Apply the adapter to the spinner
-//        workTypeDropdown.setAdapter(adapter);
-//        workTypeDropdown.setOnItemSelectedListener(this);
-        //search.setOnQueryTextListener(get);
+
         return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(NewWorkFormViewModel.class);
+        // TODO: Use the ViewModel
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("TAG", "onCreate: ");
+    }
+
+    private void setSpinnersListeners() {
+        workTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                // Handle the selected item
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle when no item is selected
+            }
+        });
+
+        phoneDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                // Handle the selected item
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle when no item is selected
+            }
+        });
+    }
+
+    private void setCheckboxesListeners() {
+        newCusCheckbox.addOnCheckedStateChangedListener(new MaterialCheckBox.OnCheckedStateChangedListener() {
+            @Override
+            public void onCheckedStateChangedListener(@NonNull MaterialCheckBox checkBox, int state) {
+                if(state == 1){
+                    llNewCustomer.setVisibility(View.VISIBLE);
+                }
+                else{
+                    llNewCustomer.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /*@Override
@@ -100,24 +156,16 @@ public class NewWorkFormFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }*/
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(NewWorkFormViewModel.class);
-        // TODO: Use the ViewModel
 
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("TAG", "onCreate: ");
-    }
 
     private void findViews(View view){
         //workTypeDropdownFrameLayout = view.findViewById(R.id.work_type_dropdown_frame_layout);
         /*search = (SearchView) view.findViewById(R.id.search);
         listView = (ListView) view.findViewById(R.id.list_view);*/
+        newCusCheckbox = view.findViewById(R.id.new_customer_checkbox);
+        llNewCustomer = view.findViewById(R.id.ll_new_customer);
+        workTypeDropdown = view.findViewById(R.id.work_type_dropdown);
+        phoneDropdown = view.findViewById(R.id.phone_dropdown);
     }
 
 }

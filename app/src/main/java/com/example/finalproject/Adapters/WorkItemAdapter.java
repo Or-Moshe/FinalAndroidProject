@@ -20,12 +20,10 @@ import java.util.Map;
 public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkViewHolder> {
 
     private Context context;
-    //private ArrayList<WorkItem> workItems;
     private Map<Integer, WorkItem> workItemsMap;
 
-    public WorkItemAdapter(Context context/*, ArrayList<WorkItem> workItems*/, Map<Integer, WorkItem> workItemsMap){
+    public WorkItemAdapter(Context context, Map<Integer, WorkItem> workItemsMap){
         this.context = context;
-        //this.workItems = workItems;
         this.workItemsMap = workItemsMap;
     }
 
@@ -41,8 +39,10 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
     public void onBindViewHolder(@NonNull WorkViewHolder holder, int position) {
         WorkItem workItem = getItem(position);
         Customer customer = workItem.getCustomer();
-        holder.customer_name.setText(customer.getName());
-        holder.phone.setText(customer.getPhone());
+        if(customer != null){
+            holder.customer_name.setText(customer.getName());
+            holder.phone.setText(customer.getPhone());
+        }
         holder.address.setText(workItem.getAddress() + "");
         holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }

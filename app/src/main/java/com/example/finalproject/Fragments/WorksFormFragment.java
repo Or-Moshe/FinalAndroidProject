@@ -45,9 +45,8 @@ public class WorksFormFragment extends Fragment {
         View root = (View) inflater.inflate(R.layout.fragment_works_form, container, false);
 
         findViews(root);
-        //viewModel = new ViewModelProvider(this).get(WorksFormViewModel.class);
-        //binding = FragmentHomeBinding.inflate(inflater, container, false);
-        //View root = binding.getRoot();
+        viewModel = new ViewModelProvider(this).get(WorksFormViewModel.class);
+
         createLinearLayout();
 
         adapter = new WorkItemAdapter(getContext(), viewModel.getWorkItemsMap().getValue());

@@ -73,10 +73,11 @@ public class LoginTabFragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     //Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getContext(), MainActivity.class));
                                     Log.d("TAG", "createUserWithEmail:success");
                                     progressIndicator.setVisibility(View.GONE);
                                     FirebaseUser user = auth.getCurrentUser();
+
+                                    startActivity(new Intent(getContext(), MainActivity.class));
                                 }else{
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }

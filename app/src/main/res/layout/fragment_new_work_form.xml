@@ -38,10 +38,9 @@
                     android:theme="@style/text_view" />
 
                 <Spinner
+                    android:id="@+id/work_type_dropdown"
                     android:layout_width="300dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/drop_down_bg"
-                    android:theme="@style/input_int" />
+                    android:layout_height="match_parent"/>
 
                 <!--            <FrameLayout-->
                 <!--                android:id="@+id/work_type_dropdown_frame_layout"-->
@@ -71,6 +70,7 @@
                     android:theme="@style/ll_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:layout_below="@id/duration_estimated_txt2_view"
                     android:orientation="horizontal">
 
@@ -91,15 +91,14 @@
 
                     <NumberPicker
                         android:id="@+id/hours_picker"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5" />
-
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -118,10 +117,9 @@
 <!--                            android:text="00" />-->
 
                         <NumberPicker
-                            android:id="@+id/seconds_picker"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5" />
+                            android:id="@+id/minutes_picker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -206,12 +204,11 @@
                     android:orientation="horizontal">
 
                     <Spinner
+                        android:id="@+id/phone_dropdown"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
-                        android:layout_weight="0.2"
-                        android:background="@drawable/drop_down_bg"
-                        android:theme="@style/input_int" />
+                        android:layout_weight="0.2" />
 
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/input_int"

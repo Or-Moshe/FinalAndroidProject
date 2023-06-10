@@ -15,6 +15,7 @@ public class WorkItem {
     private Address address;
     private String comment;
 
+    public WorkItem(){}
     public WorkItem(Integer id, Date date, Customer customer, long duration_estimated, Address address, String comment) {
         this.id = id;
         this.date = date;
@@ -24,8 +25,8 @@ public class WorkItem {
         this.comment = comment;
     }
 
-    public WorkItem(){
-        this.id = 0;
+    public WorkItem(int id){
+        this.id = id;
         this.date = Calendar.getInstance().getTime();
         this.customer = new Customer("Yossi", "0542576111", 2);
         this.duration_estimated = 2;

@@ -6,6 +6,7 @@ public class Customer {
     private String phone;
     private long time;
 
+    public Customer(){}
     public Customer(String name, String phone, long time) {
         this.name = name;
         this.phone = phone;
