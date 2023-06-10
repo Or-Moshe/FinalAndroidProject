@@ -15,8 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.finalproject.LoginActivity;
-import com.example.finalproject.MainActivity;
+import com.example.finalproject.Views.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.Utility.Helper;
 import com.google.android.gms.tasks.OnCompleteListener;

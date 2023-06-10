@@ -28,11 +28,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.R;
+import com.example.finalproject.Utility.Constants;
 import com.example.finalproject.Utility.Helper;
 import com.example.finalproject.ViewModels.NewWorkFormViewModel;
+import com.example.finalproject.ViewModels.WorksFormViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.search.SearchBar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class NewWorkFormFragment extends Fragment {
 
@@ -48,6 +57,7 @@ public class NewWorkFormFragment extends Fragment {
     private MaterialCheckBox newCusCheckbox;
     private LinearLayout llNewCustomer;
     private Spinner workTypeDropdown, phoneDropdown;
+    private MaterialButton submitBtn;
 
     public NewWorkFormFragment(){
         helper = new Helper();
@@ -69,9 +79,46 @@ public class NewWorkFormFragment extends Fragment {
 
         setSpinnersListeners();
         setCheckboxesListeners();
-
+        setBtnsListeners();
 
         return root;
+    }
+
+    private void setBtnsListeners() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        WorkItem workItem = new WorkItem(3);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Assume we have a reference to the parent document
+                DocumentReference parentDocumentRef = db.collection(Constants.DBKeys.USERS).document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2");
+
+                // Create a reference to the collection
+                CollectionReference collectionRef = parentDocumentRef.collection(Constants.DBKeys.WORK_ITEMS);
+
+                // Set data to the collection
+
+                // Create a new document in the collection and set data
+                collectionRef.document(workItem.getId()+"").set(workItem)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Data set to the subcollection successfully
+                                Log.d("TAG", "saved to document success : " + workItem);
+                                requireActivity().getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_layout, new WorksFormFragment())
+                                        .commit();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Failed to set data to the subcollection
+                                Log.e("TAG", "saved to document failed : " + workItem);
+                            }
+                        });
+            }
+        });
     }
 
     @Override
@@ -166,6 +213,7 @@ public class NewWorkFormFragment extends Fragment {
         llNewCustomer = view.findViewById(R.id.ll_new_customer);
         workTypeDropdown = view.findViewById(R.id.work_type_dropdown);
         phoneDropdown = view.findViewById(R.id.phone_dropdown);
+        submitBtn = view.findViewById(R.id.submit);
     }
 
 }

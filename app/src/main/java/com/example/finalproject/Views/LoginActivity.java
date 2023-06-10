@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.finalproject.Adapters.LoginFragmentsAdapter;
 import com.example.finalproject.Fragments.LoginTabFragment;
 import com.example.finalproject.Fragments.SignupTabFragment;
+import com.example.finalproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
