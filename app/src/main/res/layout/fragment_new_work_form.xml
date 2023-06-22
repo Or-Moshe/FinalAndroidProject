@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Fragments.NewWorkFormFragment">
 
@@ -159,17 +160,36 @@
                     android:text="@string/customer_name"
                     android:theme="@style/text_view" />
 
-                <SearchView
-                    android:id="@+id/search"
-                    style="@style/input_int"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:background="@drawable/edit_text_bg"
-                    android:iconifiedByDefault="false">
 
-                    <requestFocus />
-                </SearchView>
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:queryHint="Search customer"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/customerRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.cardview.widget.CardView>
+<!--                <SearchView-->
+<!--                    android:id="@+id/search"-->
+<!--                    style="@style/input_int"-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    android:background="@drawable/edit_text_bg"-->
+<!--                    android:iconifiedByDefault="false">-->
+
+<!--                    <requestFocus />-->
+<!--                </SearchView>-->
 
                 <!--        <ListView-->
                 <!--            android:id="@+id/list_view"-->

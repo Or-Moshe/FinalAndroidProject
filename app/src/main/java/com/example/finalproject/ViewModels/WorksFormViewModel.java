@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.finalproject.DataManager;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Utility.Constants;
@@ -49,6 +50,10 @@ public class WorksFormViewModel extends ViewModel {
     }
 
     private Map<Integer, WorkItem> getWorkItemsFromFirebase() {
+        /*Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getWorkItemsMap();
+        mWorkItemsMap.setValue(workItemsMap);
+        return workItemsMap;*/
+
         // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance();
 
@@ -76,6 +81,7 @@ public class WorksFormViewModel extends ViewModel {
                         }
                     }
                 });
+        DataManager.getInstance().setWorkItemsMap(workItemsMap);
         return workItemsMap;
     }
 
@@ -116,6 +122,7 @@ public class WorksFormViewModel extends ViewModel {
     }
 
     public LiveData<Map<Integer, WorkItem>> getWorkItemsMap() {
+
         return mWorkItemsMap;
     }
 }

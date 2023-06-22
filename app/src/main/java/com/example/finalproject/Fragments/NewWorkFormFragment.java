@@ -12,6 +12,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,9 +27,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.finalproject.Adapters.CustomerAdapter;
+import com.example.finalproject.DataManager;
+import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.R;
 import com.example.finalproject.Utility.Constants;
@@ -43,21 +49,26 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class NewWorkFormFragment extends Fragment {
 
     private NewWorkFormViewModel mViewModel;
     private FrameLayout workTypeDropdownFrameLayout;
     private Helper helper;
 
-    /*SearchView search;
-    private ListView listView;
-    private String[] names = {"aaa", "vvv", "xxx"};
-    private ArrayAdapter<String> arrayAdapter;*/
-
     private MaterialCheckBox newCusCheckbox;
     private LinearLayout llNewCustomer;
     private Spinner workTypeDropdown, phoneDropdown;
     private MaterialButton submitBtn;
+
+    private SearchView searchView;
+    private CustomerAdapter customerAdapter;
+    private ArrayList<String> customerList;
+
+    private RecyclerView customerRecyclerView;
 
     public NewWorkFormFragment(){
         helper = new Helper();
@@ -76,6 +87,46 @@ public class NewWorkFormFragment extends Fragment {
 
         helper.setDropDown(getResources(), R.array.work_types_array, getContext(), workTypeDropdown, android.R.layout.simple_spinner_dropdown_item);
         helper.setDropDown(getResources(), R.array.work_types_array, getContext(), phoneDropdown, android.R.layout.simple_spinner_dropdown_item);
+        Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getWorkItemsMap();
+
+        List<Customer> custList = DataManager.getInstance().getCustomerList();
+        // Initialize the customer list with dummy data
+        customerList = new ArrayList<>();
+        customerList.add("John Doe");
+        customerList.add("Jane Smith");
+        customerList.add("Alex Johnson");
+        customerList.add("Emily Brown");
+        // Add more customer names as needed
+
+        // Create the adapter for the customer list
+        customerAdapter = new CustomerAdapter(searchView, customerRecyclerView, customerList);
+        customerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        customerRecyclerView.setAdapter(customerAdapter);
+
+        // Set a listener for the search view
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                customerRecyclerView.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Filter the customer list based on the user's input
+                customerRecyclerView.setVisibility(View.VISIBLE);
+                customerAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+//        customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String selectedCustomer = customerList.get(position);
+//                searchView.setQuery(selectedCustomer, true);
+//            }
+//        });
 
         setSpinnersListeners();
         setCheckboxesListeners();
@@ -214,6 +265,8 @@ public class NewWorkFormFragment extends Fragment {
         workTypeDropdown = view.findViewById(R.id.work_type_dropdown);
         phoneDropdown = view.findViewById(R.id.phone_dropdown);
         submitBtn = view.findViewById(R.id.submit);
+        customerRecyclerView = view.findViewById(R.id.customerRecyclerView);
+        searchView = view.findViewById(R.id.searchView);
     }
 
 }

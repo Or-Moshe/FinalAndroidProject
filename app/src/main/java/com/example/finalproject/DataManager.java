@@ -3,7 +3,9 @@ package com.example.finalproject;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Utility.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -12,6 +14,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataManager {
@@ -19,11 +24,47 @@ public class DataManager {
     private static DataManager INSTANCE;
     private FirebaseFirestore db;
 
+    private List<Customer> customerList;
+    private Map<Integer, WorkItem> workItemsMap;
     public static DataManager getInstance() {
+        if(INSTANCE == null){
+            INSTANCE = new DataManager();
+        }
         return INSTANCE;
     }
 
-    /*public void aa(){
+    private DataManager(){
+        this.db = FirebaseFirestore.getInstance();
+        this.workItemsMap = new HashMap<>();
+        this.customerList = new ArrayList<>();
+        getDataFromFirebase();
+    }
+
+    public List<Customer> getCustomerList(){
+        if(!workItemsMap.isEmpty()){
+            for (WorkItem wo : workItemsMap.values()) {
+                customerList.add(wo.getCustomer());
+            }
+        }
+        return customerList;
+    }
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
+    }
+
+    public void setWorkItemsMap(Map<Integer, WorkItem> workItemsMap) {
+        this.workItemsMap = workItemsMap;
+    }
+
+    public Map<Integer, WorkItem> getWorkItemsMap(){
+        return workItemsMap;
+    }
+
+    private Map<Integer, WorkItem> getDataFromFirebase() {
+        // Access a Cloud Firestore instance from your Activity
+        db = FirebaseFirestore.getInstance();
+
         db.collection(Constants.DBKeys.USERS)
                 .document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2")
                 .collection(Constants.DBKeys.WORK_ITEMS)
@@ -37,7 +78,8 @@ public class DataManager {
                                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
                                     if (documentSnapshot.exists()) {
                                         // Document exists, retrieve the desired fields
-                                        fillWorkItem(documentSnapshot, workItemsMap);
+                                        fillWorkItemMap(documentSnapshot);
+                                        fillCustomerList(documentSnapshot);
                                     }
                                 }
                             }
@@ -46,19 +88,23 @@ public class DataManager {
                         }
                     }
                 });
+        return workItemsMap;
     }
 
-    private void fillWorkItem(QueryDocumentSnapshot documentSnapshot, Map<Integer, WorkItem> workItemsMap){
+    private void fillCustomerList(QueryDocumentSnapshot documentSnapshot) {
+        WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
+        if(workItem != null){
+            Customer customer = workItem.getCustomer();
+            customerList.add(customer);
+        }
+    }
+
+    private void fillWorkItemMap(QueryDocumentSnapshot documentSnapshot){
         WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
         if(workItem != null){
             Log.d("TAG", "fillWorkItem: " + workItem);
             workItemsMap.put(workItem.getId(), workItem);
-            mWorkItemsMap.setValue(workItemsMap);
         }
-    }*/
-
-    private DataManager(){
-        this.db = FirebaseFirestore.getInstance();
     }
 
 }
