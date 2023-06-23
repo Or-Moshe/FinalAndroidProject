@@ -25,6 +25,7 @@ public class DataManager {
     private FirebaseFirestore db;
 
     private List<Customer> customerList;
+    private Map<String, Customer> customerMap;
     private Map<Integer, WorkItem> workItemsMap;
     public static DataManager getInstance() {
         if(INSTANCE == null){
@@ -36,10 +37,20 @@ public class DataManager {
     private DataManager(){
         this.db = FirebaseFirestore.getInstance();
         this.workItemsMap = new HashMap<>();
+        this.customerMap = new HashMap<>();
         this.customerList = new ArrayList<>();
         getDataFromFirebase();
     }
 
+    public Map<String, Customer> getCustomerMap(){
+        if(!workItemsMap.isEmpty()){
+            for (WorkItem wo : workItemsMap.values()) {
+                Customer customer = wo.getCustomer();
+                customerMap.put(customer.getPhone(), wo.getCustomer());
+            }
+        }
+        return customerMap;
+    }
     public List<Customer> getCustomerList(){
         if(!workItemsMap.isEmpty()){
             for (WorkItem wo : workItemsMap.values()) {

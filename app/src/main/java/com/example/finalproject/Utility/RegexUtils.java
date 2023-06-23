@@ -10,4 +10,9 @@ public class RegexUtils {
     public static boolean isValidEmail(CharSequence email) {
         return pattern.matcher(email).matches();
     }
+
+    public static boolean isValidPrice(CharSequence price) {
+        String priceString = price.toString();
+        return priceString.matches("^\\d+(\\.\\d{1,2})?$");
+    }
 }

@@ -12,20 +12,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.Models.Customer;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> implements Filterable {
 
-    private ArrayList<String> customerList;
-    private ArrayList<String> filteredList;
+    private Map<String, Customer> customerMap;
+    private ArrayList<Customer> filteredList;
     private SearchView searchView;
     private RecyclerView customerRecyclerView;
+    private Customer selectedCustomer;
 
-    public CustomerAdapter(SearchView searchView, RecyclerView customerRecyclerView, ArrayList<String> customerList) {
-        this.customerList = customerList;
-        this.filteredList = new ArrayList<>(customerList);
+    public CustomerAdapter(SearchView searchView, RecyclerView customerRecyclerView, Map<String, Customer> customerMap) {
+        this.customerMap = customerMap;
+        this.filteredList = new ArrayList<>(customerMap.values());
         this.searchView = searchView;
         this.customerRecyclerView = customerRecyclerView;
+    }
+
+    public Customer getSelectedCustomer(){
+        return selectedCustomer;
     }
 
     @NonNull
@@ -37,10 +45,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
-        String customerName = filteredList.get(position);
-        holder.bind(customerName);
+        Customer customer = filteredList.get(position);
+        holder.bind(customer);
     }
-
 
     @Override
     public int getItemCount() {
@@ -53,10 +60,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String query = constraint.toString().toLowerCase();
-                ArrayList<String> filteredResults = new ArrayList<>();
+                ArrayList<Customer> filteredResults = new ArrayList<>();
 
-                for (String customer : customerList) {
-                    if (customer.toLowerCase().startsWith(query)) {
+                for (Customer customer : customerMap.values()) {
+                    if (customer.getName().toLowerCase().startsWith(query)) {
                         filteredResults.add(customer);
                     }
                 }
@@ -68,7 +75,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredList = (ArrayList<String>) results.values;
+                filteredList = (ArrayList<Customer>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -88,8 +95,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             this.customerRecyclerView = customerRecyclerView;
         }
 
-        public void bind(String customerName) {
-            customerNameTextView.setText(customerName);
+        public void bind(Customer customer) {
+            customerNameTextView.setText(customer.getName());
         }
 
         @Override
@@ -97,9 +104,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             // Handle item click here
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                String selectedCustomer = filteredList.get(position);
+                selectedCustomer = filteredList.get(position);
                 // Perform any action on the selected customer
-                searchView.setQuery(selectedCustomer, true);
+                searchView.setQuery(selectedCustomer.getName(), true);
                 customerRecyclerView.setVisibility(View.GONE);
             }
         }

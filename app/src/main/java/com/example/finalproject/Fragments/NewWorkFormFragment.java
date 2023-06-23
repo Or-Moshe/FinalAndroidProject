@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.location.Address;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import com.example.finalproject.Adapters.CustomerAdapter;
@@ -45,11 +47,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.search.SearchBar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,15 +64,20 @@ public class NewWorkFormFragment extends Fragment {
     private Helper helper;
 
     private MaterialCheckBox newCusCheckbox;
-    private LinearLayout llNewCustomer;
+    private LinearLayout llNewCustomer, llSearchCustomer;
     private Spinner workTypeDropdown, phoneDropdown;
     private MaterialButton submitBtn;
 
     private SearchView searchView;
     private CustomerAdapter customerAdapter;
-    private ArrayList<String> customerList;
-
     private RecyclerView customerRecyclerView;
+
+    // form values
+    private TextInputEditText newCustomerNameEditText, streetEditText,
+            input_street_number, priceEditText, commentEditText, phoneEditText;
+    private String typeOfWork, phonePrefix;
+    private NumberPicker hoursOfWorkPicker, minutesOfWorkPicker;
+    private Boolean isNewCustomer = false;
 
     public NewWorkFormFragment(){
         helper = new Helper();
@@ -87,22 +96,15 @@ public class NewWorkFormFragment extends Fragment {
 
         helper.setDropDown(getResources(), R.array.work_types_array, getContext(), workTypeDropdown, android.R.layout.simple_spinner_dropdown_item);
         helper.setDropDown(getResources(), R.array.work_types_array, getContext(), phoneDropdown, android.R.layout.simple_spinner_dropdown_item);
-        Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getWorkItemsMap();
 
-        List<Customer> custList = DataManager.getInstance().getCustomerList();
-        // Initialize the customer list with dummy data
-        customerList = new ArrayList<>();
-        customerList.add("John Doe");
-        customerList.add("Jane Smith");
-        customerList.add("Alex Johnson");
-        customerList.add("Emily Brown");
-        // Add more customer names as needed
+        Map<String, Customer> customerMap = DataManager.getInstance().getCustomerMap();
 
         // Create the adapter for the customer list
-        customerAdapter = new CustomerAdapter(searchView, customerRecyclerView, customerList);
+        customerAdapter = new CustomerAdapter(searchView, customerRecyclerView, customerMap);
         customerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         customerRecyclerView.setAdapter(customerAdapter);
 
+        Customer customer = customerAdapter.getSelectedCustomer();
         // Set a listener for the search view
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -120,14 +122,6 @@ public class NewWorkFormFragment extends Fragment {
             }
         });
 
-//        customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedCustomer = customerList.get(position);
-//                searchView.setQuery(selectedCustomer, true);
-//            }
-//        });
-
         setSpinnersListeners();
         setCheckboxesListeners();
         setBtnsListeners();
@@ -137,11 +131,30 @@ public class NewWorkFormFragment extends Fragment {
 
     private void setBtnsListeners() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        WorkItem workItem = new WorkItem(3);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Assume we have a reference to the parent document
+                //typeOfWork
+                int hoursOfWorkVal = hoursOfWorkPicker.getValue();
+                int minutesOfWorkVal = minutesOfWorkPicker.getValue();
+                double timeOfWork = hoursOfWorkVal * 10.0 + minutesOfWorkVal;
+                String priceVal = priceEditText.getText().toString();
+                Customer customer;
+                Address address;
+                if(isNewCustomer){
+                    String phone = phonePrefix + phoneEditText.getText().toString();
+                    String street = streetEditText.getText().toString();
+                    String streetNumber = input_street_number.getText().toString();
+                    customer = new Customer(newCustomerNameEditText.getText().toString(), phone, 0);
+                }
+                else{
+                    customer = customerAdapter.getSelectedCustomer();
+                }
+
+                String comment = commentEditText.getText().toString();
+
+                WorkItem workItem = new WorkItem(0, null, typeOfWork, timeOfWork, 0, customer, null, comment);
+                    // Assume we have a reference to the parent document
                 DocumentReference parentDocumentRef = db.collection(Constants.DBKeys.USERS).document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2");
 
                 // Create a reference to the collection
@@ -190,8 +203,7 @@ public class NewWorkFormFragment extends Fragment {
         workTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-                // Handle the selected item
+                typeOfWork = (String) parent.getItemAtPosition(position);
             }
 
             @Override
@@ -203,7 +215,7 @@ public class NewWorkFormFragment extends Fragment {
         phoneDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
+                phonePrefix = (String) parent.getItemAtPosition(position);
                 // Handle the selected item
             }
 
@@ -220,9 +232,13 @@ public class NewWorkFormFragment extends Fragment {
             public void onCheckedStateChangedListener(@NonNull MaterialCheckBox checkBox, int state) {
                 if(state == 1){
                     llNewCustomer.setVisibility(View.VISIBLE);
+                    llSearchCustomer.setVisibility(View.GONE);
+                    isNewCustomer = true;
                 }
                 else{
                     llNewCustomer.setVisibility(View.GONE);
+                    llSearchCustomer.setVisibility(View.GONE);
+                    isNewCustomer = false;
                 }
             }
         });
@@ -260,13 +276,22 @@ public class NewWorkFormFragment extends Fragment {
         //workTypeDropdownFrameLayout = view.findViewById(R.id.work_type_dropdown_frame_layout);
         /*search = (SearchView) view.findViewById(R.id.search);
         listView = (ListView) view.findViewById(R.id.list_view);*/
+        hoursOfWorkPicker = view.findViewById(R.id.hours_picker);
+        minutesOfWorkPicker = view.findViewById(R.id.minutes_picker);
+        priceEditText = view.findViewById(R.id.input_price);
         newCusCheckbox = view.findViewById(R.id.new_customer_checkbox);
+        newCustomerNameEditText = view.findViewById(R.id.input_customer_name);
+        streetEditText = view.findViewById(R.id.input_street);
+        input_street_number = view.findViewById(R.id.input_street);
         llNewCustomer = view.findViewById(R.id.ll_new_customer);
         workTypeDropdown = view.findViewById(R.id.work_type_dropdown);
         phoneDropdown = view.findViewById(R.id.phone_dropdown);
+        phoneEditText = view.findViewById(R.id.input_phone);
         submitBtn = view.findViewById(R.id.submit);
+        llSearchCustomer = view.findViewById(R.id.ll_search_customer);
         customerRecyclerView = view.findViewById(R.id.customerRecyclerView);
         searchView = view.findViewById(R.id.searchView);
+        commentEditText = view.findViewById(R.id.input_comment);
     }
 
 }

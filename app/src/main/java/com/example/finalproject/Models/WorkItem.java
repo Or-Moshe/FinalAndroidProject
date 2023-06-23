@@ -1,6 +1,7 @@
 package com.example.finalproject.Models;
 
 import android.location.Address;
+import android.net.wifi.WpsInfo;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,27 +12,44 @@ public class WorkItem {
     private Integer id;
     private Date date;
     private Customer customer;
-    private long duration_estimated;
     private Address address;
-    private String comment;
+    private String typeOfWork, comment;
+    private double timeOfWork, price;
 
     public WorkItem(){}
-    public WorkItem(Integer id, Date date, Customer customer, long duration_estimated, Address address, String comment) {
+    public WorkItem(Integer id, Date date, String typeOfWork, double timeOfWork, double price, Customer customer, Address address, String comment) {
         this.id = id;
         this.date = date;
+        this.typeOfWork = typeOfWork;
+        this.timeOfWork = timeOfWork;
+        this.price = price;
         this.customer = customer;
-        this.duration_estimated = duration_estimated;
         this.address = address;
         this.comment = comment;
     }
 
-    public WorkItem(int id){
-        this.id = id;
-        this.date = Calendar.getInstance().getTime();
-        this.customer = new Customer("Yossi", "0542576111", 2);
-        this.duration_estimated = 2;
-        //this.address = new Address(new Locale());
-        this.comment = "bla bla bla";
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getTypeOfWork() {
+        return typeOfWork;
+    }
+
+    public void setTypeOfWork(String typeOfWork) {
+        this.typeOfWork = typeOfWork;
+    }
+
+    public double getTimeOfWork() {
+        return timeOfWork;
+    }
+
+    public void setTimeOfWork(double timeOfWork) {
+        this.timeOfWork = timeOfWork;
     }
 
     public Integer getId() {
@@ -53,14 +71,6 @@ public class WorkItem {
         this.customer = customer;
     }
 
-    public long getDuration_estimated() {
-        return duration_estimated;
-    }
-
-    public void setDuration_estimated(long duration_estimated) {
-        this.duration_estimated = duration_estimated;
-    }
-
     public Address getAddress() {
         return address;
     }
@@ -79,13 +89,15 @@ public class WorkItem {
 
     @Override
     public String toString() {
-        return "Work{" +
+        return "WorkItem{" +
                 "id=" + id +
-                "date=" + date +
+                ", price=" + price +
+                ", date=" + date +
                 ", customer=" + customer +
-                ", duration_estimated=" + duration_estimated +
                 ", address=" + address +
+                ", typeOfWork='" + typeOfWork + '\'' +
                 ", comment='" + comment + '\'' +
+                ", timeOfWork=" + timeOfWork +
                 '}';
     }
 }

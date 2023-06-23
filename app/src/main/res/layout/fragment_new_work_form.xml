@@ -137,17 +137,18 @@
                     android:theme="@style/text_view" />
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_price"
                     style="@style/input_int"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:inputType="numberDecimal"
                     android:digits="0123456789.,"
                     android:background="@drawable/edit_text_bg"
-                    android:text="00" />
+                    android:hint="00" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_customer_name"
+                android:id="@+id/ll_search_customer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll_price"
@@ -209,9 +210,24 @@
                 android:id="@+id/ll_new_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ll_customer_name"
+                android:layout_below="@id/ll_search_customer"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_customer_name"
+                        style="@style/input_int"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0.7"
+                        android:inputType="text"
+                        android:background="@drawable/edit_text_bg"
+                        android:hint="@string/customer_name"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:theme="@style/ll_horizontal"
@@ -228,6 +244,7 @@
                         android:layout_weight="0.2" />
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_phone"
                         style="@style/input_int"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -254,9 +271,11 @@
                         android:theme="@style/ll_horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_street"
                             style="@style/input_int"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -267,13 +286,14 @@
                             />
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_street_number"
                             style="@style/input_int"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.3"
-                            android:inputType="number"
                             android:background="@drawable/edit_text_bg"
-                            android:hint="@string/number" />
+                            android:hint="@string/number"
+                            android:inputType="number" />
 
                     </LinearLayout>
 
@@ -309,6 +329,7 @@
                     android:theme="@style/text_view" />
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_comment"
                     style="@style/input_int"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"

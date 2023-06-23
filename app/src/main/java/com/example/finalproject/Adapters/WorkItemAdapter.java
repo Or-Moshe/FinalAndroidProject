@@ -44,7 +44,7 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
             holder.phone.setText(customer.getPhone());
         }
         holder.address.setText(workItem.getAddress() + "");
-        holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
+        //holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }
 
     public void updateWorkItemsMap(/*ArrayList<WorkItem> workItems*/ Map<Integer, WorkItem> workItemsMap) {
