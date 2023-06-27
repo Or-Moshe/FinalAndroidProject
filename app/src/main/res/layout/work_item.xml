@@ -11,55 +11,110 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/customer_name"
+
+        <LinearLayout
+            android:id="@+id/ll_customer_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="6dp"
-            android:maxLines="2"
-            android:minLines="2"
-            android:text="customer name"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/customer_name"
-            android:layout_alignStart="@id/customer_name"
-            android:layout_marginTop="8dp"
-            android:maxLines="1"
-            android:minLines="1"
-            android:text="address"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/customer_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_name_adapter"
+                android:textAppearance="?android:textAppearanceMedium" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/phone"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/customer_name_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:maxLines="1"
+                android:labelFor="@string/customer_name_adapter"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/address"
-            android:layout_alignStart="@id/customer_name"
-            android:layout_marginTop="8dp"
-            android:maxLines="1"
-            android:minLines="1"
-            android:text="0542576151"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_customer_name">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/duration_estimated"
+            <TextView
+                android:id="@+id/phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_adapter"
+                android:textStyle="bold"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/phone_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:maxLines="1"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/phone"
-            android:layout_alignStart="@id/customer_name"
-            android:layout_marginTop="8dp"
-            android:maxLines="1"
-            android:minLines="1"
-            android:text="duration estimated"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_phone">
+
+            <TextView
+                android:id="@+id/address_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address_adapter"
+                android:textStyle="bold"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/address_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:maxLines="2"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_duration_estimated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_address">
+
+            <TextView
+                android:id="@+id/duration_estimated_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duration_estimated_adapter"
+                android:textStyle="bold"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/duration_estimated_val"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:maxLines="1"
+                android:textSize="24sp"/>
+        </LinearLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

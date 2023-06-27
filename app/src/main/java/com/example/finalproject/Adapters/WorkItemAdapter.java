@@ -73,10 +73,10 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
 
         public WorkViewHolder(@NonNull View itemView) {
             super(itemView);
-            customer_name = itemView.findViewById(R.id.customer_name);
-            address = itemView.findViewById(R.id.address);
-            phone = itemView.findViewById(R.id.phone);
-            duration_estimated = itemView.findViewById(R.id.duration_estimated);
+            customer_name = itemView.findViewById(R.id.customer_name_val);
+            address = itemView.findViewById(R.id.address_val);
+            phone = itemView.findViewById(R.id.phone_val);
+            duration_estimated = itemView.findViewById(R.id.duration_estimated_val);
         }
     }
 }

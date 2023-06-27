@@ -41,5 +41,10 @@
     <string name="hours">hours</string>
     <string name="minutes">minutes</string>
     <string name="number">number</string>
+    <string name="create_new_customer">create new customer</string>
+    <string name="customer_name_adapter">customer name:</string>
+    <string name="address_adapter">address:</string>
+    <string name="phone_adapter">phone:</string>
+    <string name="duration_estimated_adapter">duration estimated:</string>
 
 </resources>
