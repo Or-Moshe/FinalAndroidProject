@@ -118,10 +118,33 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_search_customer"
+                android:id="@+id/ll_checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll_price"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sectionLabel"
+                    android:text="@string/create_new_customer"
+                    style="@style/text_view"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/sectionSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    style="@style/input_int"
+                    android:checked="false"
+                    android:background="@drawable/edit_text_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_search_customer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ll_checkbox"
                 android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
@@ -152,32 +175,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/ll_search_customer"
-                android:layout_marginBottom="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/sectionLabel"
-                    android:text="Section Label"
-                    style="@style/text_view"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sectionSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    style="@style/input_int"
-                    android:background="@drawable/edit_text_bg"/>
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_new_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ll_checkbox"
+                android:layout_below="@id/ll_search_customer"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -200,25 +201,42 @@
                     android:id="@+id/ll_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/phone_dropdown"
-                        android:layout_width="0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="0.2"
-                        style="@style/spinner_style"
-                        android:background="@drawable/drop_down_bg"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_phone"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.6"
-                        android:maxLength="7"
-                        android:inputType="phone"
-                        android:background="@drawable/edit_text_bg"
-                        style="@style/input_start"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="phone"
+                            android:theme="@style/text_view" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Spinner
+                            android:id="@+id/phone_dropdown"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="0.2"
+                            style="@style/spinner_style"
+                            android:background="@drawable/drop_down_bg"/>
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:maxLength="7"
+                            android:inputType="phone"
+                            android:background="@drawable/edit_text_bg"
+                            style="@style/input_start"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -235,52 +253,16 @@
                         android:text="@string/address"
                         android:theme="@style/text_view" />
 
-                    <LinearLayout
-                        android:theme="@style/ll_horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/input_street"
-                            style="@style/input_int"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_weight="0.7"
-                            android:inputType="textAutoComplete"
-                            android:background="@drawable/edit_text_bg"
-                            android:hint="@string/street"
-                            />
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/input_street_number"
-                            style="@style/input_int"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:background="@drawable/edit_text_bg"
-                            android:hint="@string/number"
-                            android:inputType="number" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:theme="@style/ll_horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputEditText
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompleteLocation"
                             android:layout_width="match_parent"
+                            android:hint="search location"
                             android:inputType="textAutoComplete"
-                            android:hint="@string/city"
                             android:background="@drawable/edit_text_bg"
                             style="@style/input_start"/>
-                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/ll_comment"
