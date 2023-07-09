@@ -1,5 +1,7 @@
 package com.example.finalproject.Models;
 
+import com.example.finalproject.Utility.Helper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 
 public class PlaceApi {
 
+    private Helper helper = new Helper();
     public ArrayList<String> autoComplete(String input){
         ArrayList<String> arrayList = new ArrayList();
         HttpURLConnection connection = null;
@@ -21,7 +24,8 @@ public class PlaceApi {
         try {
             StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
             sb.append("input=" + input);
-            sb.append("&key=AIzaSyB5L_pketmzC7_WK67nWH32-tglqOmVCYA");
+            String key = helper.getValueByKeyFromLocalProperties("PLACES_API_KEY");
+            sb.append("&key=" + key);
             URL url = new URL(sb.toString());
             connection = (HttpURLConnection)url.openConnection();
             InputStreamReader inputStreamReader = new InputStreamReader((connection.getInputStream()));

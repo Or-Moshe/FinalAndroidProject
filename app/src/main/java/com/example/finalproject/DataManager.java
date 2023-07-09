@@ -23,8 +23,6 @@ public class DataManager {
 
     private static DataManager INSTANCE;
     private FirebaseFirestore db;
-
-    private List<Customer> customerList;
     private Map<String, Customer> customerMap;
     private Map<Integer, WorkItem> workItemsMap;
     public static DataManager getInstance() {
@@ -38,7 +36,6 @@ public class DataManager {
         this.db = FirebaseFirestore.getInstance();
         this.workItemsMap = new HashMap<>();
         this.customerMap = new HashMap<>();
-        this.customerList = new ArrayList<>();
         getDataFromFirebase();
     }
 
@@ -51,18 +48,6 @@ public class DataManager {
         }
         return customerMap;
     }
-    public List<Customer> getCustomerList(){
-        if(!workItemsMap.isEmpty()){
-            for (WorkItem wo : workItemsMap.values()) {
-                customerList.add(wo.getCustomer());
-            }
-        }
-        return customerList;
-    }
-
-    public void setCustomerList(List<Customer> customerList) {
-        this.customerList = customerList;
-    }
 
     public void setWorkItemsMap(Map<Integer, WorkItem> workItemsMap) {
         this.workItemsMap = workItemsMap;
@@ -72,7 +57,7 @@ public class DataManager {
         return workItemsMap;
     }
 
-    private Map<Integer, WorkItem> getDataFromFirebase() {
+    public Map<Integer, WorkItem> getDataFromFirebase() {
         // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance();
 
@@ -90,7 +75,7 @@ public class DataManager {
                                     if (documentSnapshot.exists()) {
                                         // Document exists, retrieve the desired fields
                                         fillWorkItemMap(documentSnapshot);
-                                        fillCustomerList(documentSnapshot);
+                                        fillCustomerMap(documentSnapshot);
                                     }
                                 }
                             }
@@ -102,11 +87,13 @@ public class DataManager {
         return workItemsMap;
     }
 
-    private void fillCustomerList(QueryDocumentSnapshot documentSnapshot) {
+    private void fillCustomerMap(QueryDocumentSnapshot documentSnapshot) {
         WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
         if(workItem != null){
             Customer customer = workItem.getCustomer();
-            customerList.add(customer);
+            if(customer != null){
+                customerMap.put(customer.getPhone(), customer);
+            }
         }
     }
 
