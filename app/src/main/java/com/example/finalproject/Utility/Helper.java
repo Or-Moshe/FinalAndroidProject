@@ -11,10 +11,15 @@ import androidx.fragment.app.Fragment;
 import com.example.finalproject.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 public class Helper  {
 
     public void setDropDown(Resources resources, Integer arrayId, Context context, Spinner dropDown, Integer dropDownViewResource){
-        String[] items = resources.getStringArray(R.array.work_types_array);
+        String[] items = resources.getStringArray(arrayId);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(dropDownViewResource);
         dropDown.setAdapter(adapter);
@@ -38,5 +43,20 @@ public class Helper  {
             return true;
         }
     }
+
+    public String getValueByKeyFromLocalProperties(String key){
+        Properties properties = new Properties();
+        try {
+            FileInputStream fileInputStream = new FileInputStream("local.properties");
+            properties.load(fileInputStream);
+            if(properties != null){
+                return properties.getProperty(key);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

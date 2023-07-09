@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.finalproject.DataManager;
 import com.example.finalproject.Views.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.Utility.Helper;
@@ -75,7 +76,7 @@ public class LoginTabFragment extends Fragment {
                                     Log.d("TAG", "createUserWithEmail:success");
                                     progressIndicator.setVisibility(View.GONE);
                                     FirebaseUser user = auth.getCurrentUser();
-
+                                    DataManager.getInstance().getDataFromFirebase();
                                     startActivity(new Intent(getContext(), MainActivity.class));
                                 }else{
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
