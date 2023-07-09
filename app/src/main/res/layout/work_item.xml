@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/customer_name_adapter"
+                android:textStyle="bold"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -114,6 +115,37 @@
                 android:layout_marginTop="6dp"
                 android:maxLines="1"
                 android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_duration_estimated">
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/ll_duration_estimated">-->
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
+
+                    <ImageView
+                        android:id="@+id/confirm_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/confirm_green_png"/>
+
+                    <ImageView
+                        android:layout_gravity="end"
+                        android:id="@+id/cancel_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/cancel_red_png" />
+                </LinearLayout>
+<!--            </RelativeLayout>-->
         </LinearLayout>
 
     </RelativeLayout>

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.finalproject.DataManager;
+import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Views.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.Utility.Helper;
@@ -28,12 +30,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Map;
+
 public class LoginTabFragment extends Fragment {
 
     private FirebaseAuth auth;
     private TextInputEditText editTextEmail, editTextPassword;
     private MaterialButton login_btn;
-    private CircularProgressIndicator progressIndicator;
+    private ProgressBar progressIndicator;
     private final int MIN_PASS_LEN = 6; // Minimum character limit
     private Boolean isEmailValid = false, isPassValid = false;
     private Helper helper;
@@ -72,11 +76,12 @@ public class LoginTabFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
+                                    Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getDataFromFirebase();
                                     //Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "createUserWithEmail:success");
+                                    Log.d("TAG", "createUserWithEmail:success" + workItemsMap);
                                     progressIndicator.setVisibility(View.GONE);
                                     FirebaseUser user = auth.getCurrentUser();
-                                    DataManager.getInstance().getDataFromFirebase();
+
                                     startActivity(new Intent(getContext(), MainActivity.class));
                                 }else{
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();

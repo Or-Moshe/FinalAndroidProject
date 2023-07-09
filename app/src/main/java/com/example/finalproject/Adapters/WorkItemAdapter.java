@@ -5,8 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.Models.Customer;
@@ -32,6 +35,7 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
     public WorkItemAdapter.WorkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("passed VT:", "" + viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.work_item, parent, false);
+
         return new WorkViewHolder(view);
     }
 
@@ -71,12 +75,31 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
         private MaterialTextView phone;
         private MaterialTextView duration_estimated;
 
+        private ImageView confirmIcon, cancelIcon;
+
         public WorkViewHolder(@NonNull View itemView) {
             super(itemView);
             customer_name = itemView.findViewById(R.id.customer_name_val);
             address = itemView.findViewById(R.id.address_val);
             phone = itemView.findViewById(R.id.phone_val);
             duration_estimated = itemView.findViewById(R.id.duration_estimated_val);
+            /*confirmIcon = itemView.findViewById(R.id.confirm_icon);
+            cancelIcon = itemView.findViewById(R.id.cancel_icon);
+            confirmIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(itemView.getContext(), "confirm", Toast.LENGTH_SHORT).show();
+
+//                iconImageView.setColorFilter(ContextCompat.getColor(v.getContext(), R.color.));
+//
+//                iconImageView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        iconImageView.clearColorFilter();
+//                    }
+//                }, 200); // Delay in milliseconds before resetting the color
+                }
+            });*/
         }
     }
 }
