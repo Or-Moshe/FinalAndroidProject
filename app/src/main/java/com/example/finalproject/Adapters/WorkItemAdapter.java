@@ -9,13 +9,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.DataManager;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.R;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -48,6 +51,25 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
             holder.phone.setText(customer.getPhone());
         }
         holder.address.setText(workItem.getAddress() + "");
+        holder.confirmIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "confirm", Toast.LENGTH_SHORT).show();
+                workItem.setIsDone(true);
+                holder.card.setBackgroundColor(context.getColor(R.color.brightGreen));
+                DataManager.getInstance().updateWorkOrder(workItem);
+            }
+        });
+        holder.cancelIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "cancel", Toast.LENGTH_SHORT).show();
+                workItem.setIsDone(false);
+                holder.card.setBackgroundColor(context.getColor(R.color.brightRed));
+                DataManager.getInstance().updateWorkOrder(workItem);
+            }
+        });
+
         //holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }
 
@@ -76,30 +98,17 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
         private MaterialTextView duration_estimated;
 
         private ImageView confirmIcon, cancelIcon;
+        private CardView card;
 
         public WorkViewHolder(@NonNull View itemView) {
             super(itemView);
+            card = itemView.findViewById(R.id.card);
             customer_name = itemView.findViewById(R.id.customer_name_val);
             address = itemView.findViewById(R.id.address_val);
             phone = itemView.findViewById(R.id.phone_val);
             duration_estimated = itemView.findViewById(R.id.duration_estimated_val);
-            /*confirmIcon = itemView.findViewById(R.id.confirm_icon);
+            confirmIcon = itemView.findViewById(R.id.confirm_icon);
             cancelIcon = itemView.findViewById(R.id.cancel_icon);
-            confirmIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), "confirm", Toast.LENGTH_SHORT).show();
-
-//                iconImageView.setColorFilter(ContextCompat.getColor(v.getContext(), R.color.));
-//
-//                iconImageView.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        iconImageView.clearColorFilter();
-//                    }
-//                }, 200); // Delay in milliseconds before resetting the color
-                }
-            });*/
         }
     }
 }

@@ -15,8 +15,17 @@ public class WorkItem {
     private Address address;
     private String typeOfWork, comment;
     private double timeOfWork, price;
-
+    private Boolean isDone;
     public WorkItem(){}
+
+    public Boolean getIsDone() {
+        return isDone;
+    }
+
+    public void setIsDone(Boolean done) {
+        isDone = done;
+    }
+
     public WorkItem(Integer id, Date date, String typeOfWork, double timeOfWork, double price, Customer customer, Address address, String comment) {
         this.id = id;
         this.date = date;
@@ -26,6 +35,7 @@ public class WorkItem {
         this.customer = customer;
         this.address = address;
         this.comment = comment;
+        this.isDone  = false;
     }
 
     public double getPrice() {
