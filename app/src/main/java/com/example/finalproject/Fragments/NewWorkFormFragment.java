@@ -111,7 +111,7 @@ public class NewWorkFormFragment extends Fragment {
         helper.setDropDown(getResources(), R.array.phone_array, getContext(), phoneDropdown, android.R.layout.simple_spinner_dropdown_item);
 
         Map<String, Customer> customerMap = DataManager.getInstance().getCustomerMap();
-
+        Log.d("TAG", "customerMap: " + customerMap);
         // Create the adapter for the customer list
         customerAdapter = new CustomerAdapter(searchView, customerRecyclerView, customerMap);
         customerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

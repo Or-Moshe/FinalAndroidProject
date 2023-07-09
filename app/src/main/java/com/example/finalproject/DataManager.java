@@ -5,11 +5,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.finalproject.Interfaces.DataRetrievedListener;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Utility.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,7 +39,6 @@ public class DataManager {
         this.db = FirebaseFirestore.getInstance();
         this.workItemsMap = new HashMap<>();
         this.customerMap = new HashMap<>();
-        getDataFromFirebase();
     }
 
     public Map<String, Customer> getCustomerMap(){
@@ -57,7 +59,35 @@ public class DataManager {
         return workItemsMap;
     }
 
-    public Map<Integer, WorkItem> getDataFromFirebase() {
+    public void retrieveDataFromFirestore(FirebaseUser user, DataRetrievedListener listener) {
+        // Retrieve the collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(Constants.DBKeys.USERS)
+                .document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2")
+                .collection(Constants.DBKeys.WORK_ITEMS)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    // Document exists, retrieve the desired fields
+                                    fillWorkItemMap(documentSnapshot);
+                                    fillCustomerMap(documentSnapshot);
+                                }
+                            }
+                        }
+                        List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                        // Pass the retrieved data to the listener
+                        Log.d("TAG", "Pass the retrieved data to the listener: ");
+                        listener.onDataRetrieved(documentList);
+                    } else {
+                        Log.e("Firestore", "Error retrieving data", task.getException());
+                    }
+                });
+    }
+    /*public Map<Integer, WorkItem> getDataFromFirebase() {
         // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance();
 
@@ -85,7 +115,7 @@ public class DataManager {
                     }
                 });
         return workItemsMap;
-    }
+    }*/
 
     private void fillCustomerMap(QueryDocumentSnapshot documentSnapshot) {
         WorkItem workItem = documentSnapshot.toObject(WorkItem.class);

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.finalproject.DataManager;
+import com.example.finalproject.Interfaces.DataRetrievedListener;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Views.MainActivity;
 import com.example.finalproject.R;
@@ -29,7 +30,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.List;
 import java.util.Map;
 
 public class LoginTabFragment extends Fragment {
@@ -76,13 +79,16 @@ public class LoginTabFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getDataFromFirebase();
-                                    //Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "createUserWithEmail:success" + workItemsMap);
-                                    progressIndicator.setVisibility(View.GONE);
                                     FirebaseUser user = auth.getCurrentUser();
+                                    DataManager.getInstance().retrieveDataFromFirestore(user, new DataRetrievedListener() {
+                                        @Override
+                                        public void onDataRetrieved(List<DocumentSnapshot> documentList) {
+                                            progressIndicator.setVisibility(View.GONE);
+                                            Log.d("TAG", "onDataRetrieved: "+documentList);
+                                            startActivity(new Intent(getContext(), MainActivity.class));
+                                        }
+                                    });
 
-                                    startActivity(new Intent(getContext(), MainActivity.class));
                                 }else{
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
@@ -146,4 +152,5 @@ public class LoginTabFragment extends Fragment {
         login_btn = view.findViewById(R.id.login_btn);
         progressIndicator = view.findViewById(R.id.progressBar);
     }
+
 }
