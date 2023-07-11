@@ -83,7 +83,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.5"
                             android:text="@string/minutes"
                             android:theme="@style/text_view" />
 
@@ -158,14 +158,17 @@
                     android:layout_height="wrap_content"
                     android:queryHint="Search customer"
                     android:background="@drawable/edit_text_bg"
-                    style="@style/input_int"/>
+                    style="@style/input_int"
+                    />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/customer_search_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp"
-                    app:cardUseCompatPadding="true">
+                    app:cardUseCompatPadding="true"
+                    android:visibility="gone">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/customerRecyclerView"
@@ -180,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_search_customer"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"

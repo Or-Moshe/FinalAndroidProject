@@ -46,5 +46,6 @@
     <string name="address_adapter">address:</string>
     <string name="phone_adapter">phone:</string>
     <string name="duration_estimated_adapter">duration estimated:</string>
+    <string name="save">save</string>
 
 </resources>

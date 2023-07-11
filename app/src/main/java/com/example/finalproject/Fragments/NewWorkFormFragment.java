@@ -1,6 +1,7 @@
 package com.example.finalproject.Fragments;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -79,6 +80,7 @@ public class NewWorkFormFragment extends Fragment {
     private MaterialButton submitBtn;
 
     private SearchView searchView;
+    private CardView customerSearchCard;
     private CustomerAdapter customerAdapter;
     private RecyclerView customerRecyclerView;
     private SwitchMaterial sectionSwitch;
@@ -119,6 +121,16 @@ public class NewWorkFormFragment extends Fragment {
 
         autoCompleteLocation.setAdapter(new PlaceAutoSuggestAdapter(getActivity(), android.R.layout.simple_list_item_1));
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (customerSearchCard.getVisibility() == View.GONE) {
+                    customerSearchCard.setVisibility(View.VISIBLE);
+                } else {
+                    customerSearchCard.setVisibility(View.GONE);
+                }
+            }
+        });
         // Set a listener for the search view
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -275,6 +287,7 @@ public class NewWorkFormFragment extends Fragment {
         llSearchCustomer = view.findViewById(R.id.ll_search_customer);
         customerRecyclerView = view.findViewById(R.id.customerRecyclerView);
         searchView = view.findViewById(R.id.searchView);
+        customerSearchCard = view.findViewById(R.id.customer_search_card);
         commentEditText = view.findViewById(R.id.input_comment);
         sectionSwitch = view.findViewById(R.id.sectionSwitch);
         autoCompleteLocation = view.findViewById(R.id.autoCompleteLocation);
