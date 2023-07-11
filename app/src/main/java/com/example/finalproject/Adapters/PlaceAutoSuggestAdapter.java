@@ -1,6 +1,7 @@
 package com.example.finalproject.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -48,6 +49,7 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable 
 
                     filterResults.values = results;
                     filterResults.count = results.size();
+                    Log.d("TAG", "performFiltering: " + filterResults.values);
                 }
                 return filterResults;
             }
