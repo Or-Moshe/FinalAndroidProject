@@ -1,6 +1,15 @@
 package com.example.finalproject.Models;
 
+import android.content.Context;
+
 import com.example.finalproject.Utility.Helper;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +33,7 @@ public class PlaceApi {
         try {
             StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
             sb.append("input=" + input);
-            String key = helper.getValueByKeyFromLocalProperties("PLACES_API_KEY");
+            String key = /*helper.getValueByKeyFromLocalProperties("PLACES_API_KEY");*/ "AIzaSyB5L_pketmzC7_WK67nWH32-tglqOmVCYA";
             sb.append("&key=" + key);
             URL url = new URL(sb.toString());
             connection = (HttpURLConnection)url.openConnection();
@@ -60,5 +69,21 @@ public class PlaceApi {
             e.printStackTrace();
         }
         return arrayList;
+    }
+
+    public void addMarkerByPlaceId(Context context, GoogleMap googleMap, String placeId){
+        PlacesClient placesClient = Places.createClient(context);
+        FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, Arrays.asList(Place.Field.LAT_LNG));
+        LatLng latLng2;
+        // Fetch the place details
+        placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+            Place place = response.getPlace();
+            LatLng latLng = place.getLatLng();
+            // Add a marker to the GoogleMap object
+            googleMap.addMarker(new MarkerOptions().position(latLng));
+        }).addOnFailureListener((exception) -> {
+            // Handle the error
+            exception.printStackTrace();
+        });
     }
 }

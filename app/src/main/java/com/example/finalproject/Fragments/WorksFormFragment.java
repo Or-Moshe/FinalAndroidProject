@@ -1,5 +1,6 @@
 package com.example.finalproject.Fragments;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,27 +12,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.finalproject.Adapters.WorkItemAdapter;
+import com.example.finalproject.DataManager;
+import com.example.finalproject.Interfaces.DocumentDeletedListener;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.R;
 import com.example.finalproject.ViewModels.WorksFormViewModel;
+import com.google.android.material.button.MaterialButton;
+
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class WorksFormFragment extends Fragment {
 
     private WorksFormViewModel viewModel;
     private WorkItemAdapter adapter;
+    private MaterialButton save_btn;
 
     private RecyclerView mainLSTWorks;
-    private Observer<Map<Integer, WorkItem>> observer = new Observer<Map<Integer, WorkItem>>() {
+    private Observer<Map<String, WorkItem>> observer = new Observer<Map<String, WorkItem>>() {
         @Override
-        public void onChanged(Map<Integer, WorkItem> workNumToWorkItemMap) {
+        public void onChanged(Map<String, WorkItem> workNumToWorkItemMap) {
             adapter.updateWorkItemsMap(workNumToWorkItemMap);
         }
     } ;
@@ -46,6 +55,7 @@ public class WorksFormFragment extends Fragment {
         View root = (View) inflater.inflate(R.layout.fragment_works_form, container, false);
 
         findViews(root);
+        setBtnsListeners();
         viewModel = new ViewModelProvider(this).get(WorksFormViewModel.class);
 
         createLinearLayout();
@@ -57,7 +67,28 @@ public class WorksFormFragment extends Fragment {
         return root;
     }
 
-    private void createLinearLayout(){
+    private void setBtnsListeners() {
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DataManager.getInstance().setWorkItemsInFirestore();
+                //observer.onChanged(DataManager.getInstance().getWorkItemsMap());
+                DataManager.getInstance().deleteDocuments(new DocumentDeletedListener() {
+                    @Override
+                    public void onDocumentDeleted(String documentId) {
+                        Log.d("TAG", "onDocumentDeleted: "+ documentId);
+                        viewModel.onDocumentDeleted(documentId);
+                    }
+
+                    @Override
+                    public void onDocumentDeletionFailed(Exception e) {
+
+                    }
+                });
+            }
+        });
+    }
+        private void createLinearLayout(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mainLSTWorks.setLayoutManager(linearLayoutManager);
@@ -71,5 +102,6 @@ public class WorksFormFragment extends Fragment {
 
     private void findViews(View view){
         mainLSTWorks = view.findViewById(R.id.main_LST_works);
+        save_btn = view.findViewById(R.id.save_btn);
     }
 }

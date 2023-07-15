@@ -5,10 +5,40 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.WorksFormFragment">
 
+
+
+
+<!--    <ScrollView-->
+<!--        android:id="@+id/scroll"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="690dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/main_LST_works"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    tools:listitem="@layout/work_item" />-->
+<!--            &lt;!&ndash; Scrollable content here &ndash;&gt;-->
+
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_LST_works"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="690dp"
         tools:listitem="@layout/work_item" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_LST_works"
+        android:layout_alignParentBottom="true"
+        android:text="@string/save" />
 
 </RelativeLayout>

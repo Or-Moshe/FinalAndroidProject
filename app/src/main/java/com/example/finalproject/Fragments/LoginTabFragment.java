@@ -90,6 +90,8 @@ public class LoginTabFragment extends Fragment {
                                     });
 
                                 }else{
+                                    progressIndicator.setVisibility(View.GONE);
+                                    Log.e("TAG", "onComplete: ", task.getException());
                                     Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }

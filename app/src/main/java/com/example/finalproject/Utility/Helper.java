@@ -3,6 +3,7 @@ package com.example.finalproject.Utility;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -47,6 +48,7 @@ public class Helper  {
     public String getValueByKeyFromLocalProperties(String key){
         Properties properties = new Properties();
         try {
+            Log.d("TAG", "getValueByKeyFromLocalProperties: " + System.getProperty("PLACES_API_KEY"));
             FileInputStream fileInputStream = new FileInputStream("local.properties");
             properties.load(fileInputStream);
             if(properties != null){

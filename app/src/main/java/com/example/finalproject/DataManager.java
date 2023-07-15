@@ -1,20 +1,19 @@
 package com.example.finalproject;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
+import com.example.finalproject.Fragments.WorksFormFragment;
 import com.example.finalproject.Interfaces.DataRetrievedListener;
+import com.example.finalproject.Interfaces.DocumentCreatedListener;
+import com.example.finalproject.Interfaces.DocumentDeletedListener;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Utility.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,22 +21,25 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DataManager {
 
     private static DataManager INSTANCE;
     private FirebaseFirestore db;
-    private DocumentReference documentRef;
-    private CollectionReference collectionRef;
+    private FirebaseUser user;
+    private DocumentReference userDocumentRef;
+    private CollectionReference workItemsCollectionRef;
     private Map<String, Customer> customerMap;
-    private Map<Integer, WorkItem> workItemsMap;
+    private Map<String, WorkItem> workItemsMap;
     public static DataManager getInstance() {
         if(INSTANCE == null){
             INSTANCE = new DataManager();
@@ -45,6 +47,9 @@ public class DataManager {
         return INSTANCE;
     }
 
+    public FirebaseUser getUser() {
+        return this.user;
+    }
     private DataManager(){
         this.db = FirebaseFirestore.getInstance();
         this.workItemsMap = new HashMap<>();
@@ -61,34 +66,112 @@ public class DataManager {
         return customerMap;
     }
 
-    public void setWorkItemsMap(Map<Integer, WorkItem> workItemsMap) {
-        this.workItemsMap = workItemsMap;
+    public Map<String, WorkItem> getWorkItemsMap(){
+        Log.d("TAG", "getWorkItemsMap: " + workItemsMap.size());
+        return retrieveDataFromFirestore();
     }
 
-    public Map<Integer, WorkItem> getWorkItemsMap(){
-        return workItemsMap;
+    public void setWorkItemsInFirestore(){
+        Query query = workItemsCollectionRef.whereEqualTo("isDone", true);
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        // Iterate through the documents returned by the query
+                        for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                            // Delete each document
+                            deleteWorkItem(documentSnapshot);
+                        }
+                        //fixKeysMap();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle the error
+                    }
+                });
+
     }
 
-    public void retrieveDataFromFirestore(FirebaseUser user, DataRetrievedListener listener) {
+    public void deleteDocuments(final DocumentDeletedListener listener){
+        Set<String> docIdSet = new HashSet<>();
+        Query query = workItemsCollectionRef.whereEqualTo("isDone", true);
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        // Iterate through the documents returned by the query
+                        for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+                            // Delete each document
+                            String documentId = documentSnapshot.getId();
+                            docIdSet.add(documentId);
+                            deleteWorkItem(documentSnapshot);
+                            listener.onDocumentDeleted(documentId);
+                            Log.d("TAG", "deleteDocuments: ");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle the error
+                    }
+                });
+    }
+
+    public String addNewDocument(WorkItem workItem, final DocumentCreatedListener listener){
+        // Create a new document in the collection and set data
+        DocumentReference newDocumentRef = workItemsCollectionRef.document();
+        String documentId = newDocumentRef.getId(); // Get the auto-generated document ID
+        workItem.setId(documentId);
+        newDocumentRef.set(workItem)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Data set to the subcollection successfully
+                        Log.d("TAG", "saved to document success : " + workItem);
+                        listener.onDocumentCreated(documentId);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to set data to the subcollection
+                        Log.e("TAG", "saved to document failed : " + workItem);
+                        listener.onDocumentCreationFailed(e);
+                    }
+                });
+        return documentId;
+    }
+
+
+    public Map<String, WorkItem> retrieveDataFromFirestore(FirebaseUser user, DataRetrievedListener listener) {
         // Retrieve the collection from Firestore
-        db = FirebaseFirestore.getInstance();
-        documentRef = db.collection(Constants.DBKeys.USERS).document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2");
-        collectionRef = documentRef.collection(Constants.DBKeys.WORK_ITEMS);
+        this.user = user;
+        this.userDocumentRef = db.collection(Constants.DBKeys.USERS).document(user.getUid());
+        this.workItemsCollectionRef = userDocumentRef.collection(Constants.DBKeys.WORK_ITEMS);
 
-        collectionRef.get()
+        workItemsCollectionRef.get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null) {
-                        for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                            if (documentSnapshot.exists()) {
+                    List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                    for (DocumentSnapshot documentSnapshot : documentList) {
+                        fillWorkItemMap(documentSnapshot);
+                        fillCustomerMap(documentSnapshot);
+                    }
+                    /*if (querySnapshot != null) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                            if (queryDocumentSnapshot.exists()) {
                                 // Document exists, retrieve the desired fields
-                                fillWorkItemMap(documentSnapshot);
-                                fillCustomerMap(documentSnapshot);
+                                fillWorkItemMap(queryDocumentSnapshot);
+                                fillCustomerMap(queryDocumentSnapshot);
                             }
                         }
-                    }
-                    List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                    }*/
+
                     // Pass the retrieved data to the listener
                     Log.d("TAG", "Pass the retrieved data to the listener: ");
                     listener.onDataRetrieved(documentList);
@@ -96,7 +179,7 @@ public class DataManager {
                     Log.e("Firestore", "Error retrieving data", task.getException());
                 }
             });
-        documentRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        userDocumentRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -114,12 +197,58 @@ public class DataManager {
                 }
             }
         });
+        return workItemsMap;
+    }
+
+    private Map<String, WorkItem> retrieveDataFromFirestore() {
+        workItemsCollectionRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentList) {
+                            fillWorkItemMap(documentSnapshot);
+                            fillCustomerMap(documentSnapshot);
+                        }
+                        /*if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                if (queryDocumentSnapshot.exists()) {
+
+                                    // Document exists, retrieve the desired fields
+                                    fillWorkItemMap(queryDocumentSnapshot);
+                                    fillCustomerMap(queryDocumentSnapshot);
+                                }
+                            }
+                        }*/
+                    } else {
+                        Log.e("Firestore", "Error retrieving data", task.getException());
+                    }
+                });
+        userDocumentRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("Firestore", "Listen failed", error);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    // Document data is available in the snapshot
+                    // Extract the updated data and perform necessary actions
+                    String updatedField = snapshot.getString("field_name");
+                    // Update your UI or perform other operations based on the updated data
+                } else {
+                    Log.d("Firestore", "Current data: null");
+                }
+            }
+        });
+        return workItemsMap;
     }
 
     public void updateWorkOrder(WorkItem workItem) {
         if (workItem != null) {
             String documentId = workItem.getId()+"";
-            collectionRef.document(documentId).set(workItem)
+            workItemsCollectionRef.document(documentId).set(workItem)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -136,37 +265,8 @@ public class DataManager {
                 });
         }
     }
-    /*public Map<Integer, WorkItem> getDataFromFirebase() {
-        // Access a Cloud Firestore instance from your Activity
-        db = FirebaseFirestore.getInstance();
 
-        db.collection(Constants.DBKeys.USERS)
-                .document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2")
-                .collection(Constants.DBKeys.WORK_ITEMS)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (querySnapshot != null) {
-                                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                                    if (documentSnapshot.exists()) {
-                                        // Document exists, retrieve the desired fields
-                                        fillWorkItemMap(documentSnapshot);
-                                        fillCustomerMap(documentSnapshot);
-                                    }
-                                }
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        return workItemsMap;
-    }*/
-
-    private void fillCustomerMap(QueryDocumentSnapshot documentSnapshot) {
+    private void fillCustomerMap(DocumentSnapshot documentSnapshot) {
         WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
         if(workItem != null){
             Customer customer = workItem.getCustomer();
@@ -176,12 +276,18 @@ public class DataManager {
         }
     }
 
-    private void fillWorkItemMap(QueryDocumentSnapshot documentSnapshot){
+    private void fillWorkItemMap(DocumentSnapshot documentSnapshot){
         WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
         if(workItem != null){
-            Log.d("TAG", "fillWorkItem: " + workItem);
-            workItemsMap.put(workItem.getId(), workItem);
+            workItemsMap.put(documentSnapshot.getId(), workItem);
         }
     }
 
+    private void deleteWorkItem(DocumentSnapshot documentSnapshot){
+        WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
+        if(workItem != null){
+            workItemsMap.remove(documentSnapshot.getId());
+            documentSnapshot.getReference().delete();
+        }
+    }
 }

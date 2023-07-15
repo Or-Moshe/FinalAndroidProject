@@ -41,6 +41,7 @@ import android.widget.ToggleButton;
 import com.example.finalproject.Adapters.CustomerAdapter;
 import com.example.finalproject.Adapters.PlaceAutoSuggestAdapter;
 import com.example.finalproject.DataManager;
+import com.example.finalproject.Interfaces.DocumentCreatedListener;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.R;
@@ -70,7 +71,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class NewWorkFormFragment extends Fragment {
+public class NewWorkFormFragment extends Fragment{
 
     private NewWorkFormViewModel mViewModel;
     private Helper helper;
@@ -170,42 +171,24 @@ public class NewWorkFormFragment extends Fragment {
         return root;
     }
 
-
     private void setBtnsListeners() {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 createWoFromForm();
-                    // Assume we have a reference to the parent document
-                DocumentReference parentDocumentRef = db.collection(Constants.DBKeys.USERS).document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2");
+                DataManager.getInstance().addNewDocument(workItem, new DocumentCreatedListener() {
+                    @Override
+                    public void onDocumentCreated(String documentId) {
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout, new WorksFormFragment())
+                            .commit();
+                    }
 
-                // Create a reference to the collection
-                CollectionReference collectionRef = parentDocumentRef.collection(Constants.DBKeys.WORK_ITEMS);
-
-                // Set data to the collection
-
-                // Create a new document in the collection and set data
-                collectionRef.document(workItem.getId()+"").set(workItem)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                // Data set to the subcollection successfully
-                                Log.d("TAG", "saved to document success : " + workItem);
-                                requireActivity().getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.frame_layout, new WorksFormFragment())
-                                        .commit();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Failed to set data to the subcollection
-                                Log.e("TAG", "saved to document failed : " + workItem);
-                            }
-                        });
+                    @Override
+                    public void onDocumentCreationFailed(Exception e) {
+                        Log.e("TAG", "onDocumentCreationFailed: "+ e.getMessage());
+                    }
+                });
             }
         });
     }
@@ -256,7 +239,7 @@ public class NewWorkFormFragment extends Fragment {
         int minutesOfWorkVal = minutesOfWorkPicker.getValue();
         double timeOfWork = hoursOfWorkVal * 10.0 + minutesOfWorkVal;
         String priceStr = priceEditText.getText().toString();
-        double priceVal = Double.parseDouble(priceStr);
+        double priceVal = !priceStr.isEmpty() ? Double.parseDouble(priceStr): 0;
         Customer customer;
         Address address;
         if(isNewCustomer){
@@ -269,10 +252,17 @@ public class NewWorkFormFragment extends Fragment {
         }
 
         String comment = commentEditText.getText().toString();
-        workItem = new WorkItem(DataManager.getInstance().getWorkItemsMap().size(), null, typeOfWork, timeOfWork, priceVal, customer, null, comment);
+        workItem = new WorkItem(/*DataManager.getInstance().getWorkItemsMap().size(),*/ null, typeOfWork, timeOfWork, priceVal, customer, null, comment);
     }
 
+    private void settingDefaultValues(){
+        hoursOfWorkPicker.setMinValue(0);
+        minutesOfWorkPicker.setMinValue(0);
 
+        hoursOfWorkPicker.setMaxValue(10);
+        hoursOfWorkPicker.setMaxValue(10);
+
+    }
 
     private void findViews(View view){
         hoursOfWorkPicker = view.findViewById(R.id.hours_picker);

@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.finalproject.DataManager;
+import com.example.finalproject.Interfaces.DataRetrievedListener;
+import com.example.finalproject.Interfaces.DocumentDeletedListener;
 import com.example.finalproject.Models.Customer;
 import com.example.finalproject.Models.WorkItem;
 import com.example.finalproject.Utility.Constants;
@@ -35,94 +37,43 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WorksFormViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 
-    private final MutableLiveData<Map<Integer, WorkItem>> mWorkItemsMap;
-    private FirebaseFirestore db;
+    private final MutableLiveData<Map<String, WorkItem>> mWorkItemsMap;
 
     public WorksFormViewModel() {
         this.mWorkItemsMap = new MutableLiveData<>();
-        this.mWorkItemsMap.setValue(getWorkItemsFromFirebase());
+        this.mWorkItemsMap.setValue(DataManager.getInstance().getWorkItemsMap());
 
     }
 
-    private Map<Integer, WorkItem> getWorkItemsFromFirebase() {
-        /*Map<Integer, WorkItem> workItemsMap = DataManager.getInstance().getWorkItemsMap();
-        mWorkItemsMap.setValue(workItemsMap);
-        return workItemsMap;*/
-
-        // Access a Cloud Firestore instance from your Activity
-        db = FirebaseFirestore.getInstance();
-
-        Map<Integer, WorkItem> workItemsMap = new HashMap<>();
-
-        db.collection(Constants.DBKeys.USERS)
-                .document("gYkdDsk6c7Wk8ADQ3gZYs4Ovujx2")
-                .collection(Constants.DBKeys.WORK_ITEMS)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (querySnapshot != null) {
-                                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                                    if (documentSnapshot.exists()) {
-                                        // Document exists, retrieve the desired fields
-                                        fillWorkItem(documentSnapshot, workItemsMap);
-                                    }
-                                }
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        DataManager.getInstance().setWorkItemsMap(workItemsMap);
-        return workItemsMap;
+    public void onDocumentDeleted(String documentId) {
+        Map<String, WorkItem> workItemMap = mWorkItemsMap.getValue();
+        workItemMap.remove(documentId);
+        mWorkItemsMap.setValue(workItemMap);
+        Log.d("TAG", "onDocumentDeleted"+ mWorkItemsMap);
     }
 
-    private void fillWorkItem(QueryDocumentSnapshot documentSnapshot, Map<Integer, WorkItem> workItemsMap){
-        WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
-        if(workItem != null){
-            Log.d("TAG", "fillWorkItem: " + workItem);
-            workItemsMap.put(workItem.getId(), workItem);
-            mWorkItemsMap.setValue(workItemsMap);
-        }
-    }
+    public LiveData<Map<String, WorkItem>> getWorkItemsMap() {
+        DataManager manager = DataManager.getInstance();
 
-    public void addWorkItemToDB(String documentPath, WorkItem workItem){
-        // Assume we have a reference to the parent document
-        DocumentReference parentDocumentRef = db.collection(Constants.DBKeys.USERS).document(documentPath);
-
-        // Create a reference to the collection
-        CollectionReference collectionRef = parentDocumentRef.collection(Constants.DBKeys.WORK_ITEMS);
-
-        // Set data to the collection
-
-        // Create a new document in the collection and set data
-        collectionRef.document(workItem.getId()+"").set(workItem)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    // Data set to the subcollection successfully
-                    Log.d("TAG", "saved to document success : " + workItem);
+        DataManager.getInstance().retrieveDataFromFirestore(manager.getUser(), new DataRetrievedListener() {
+            @Override
+            public void onDataRetrieved(List<DocumentSnapshot> documentList) {
+                Map<String, WorkItem> workItemMap = new HashMap<>();
+                for (DocumentSnapshot documentSnapshot : documentList) {
+                    WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
+                    workItemMap.put(workItem.getId(), workItem);
+                    Log.d("TAG", "onDataRetrieved: "+ workItemMap);
                 }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Failed to set data to the subcollection
-                    Log.e("TAG", "saved to document failed : " + workItem);
-                }
+                mWorkItemsMap.setValue(workItemMap);
+            }
         });
-    }
-
-    public LiveData<Map<Integer, WorkItem>> getWorkItemsMap() {
-
+        Log.d("TAG", "onDataRetrieved:mWorkItemsMap"+ mWorkItemsMap);
         return mWorkItemsMap;
     }
 }

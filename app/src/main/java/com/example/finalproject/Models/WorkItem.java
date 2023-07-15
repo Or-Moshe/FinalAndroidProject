@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class WorkItem {
 
-    private Integer id;
+    private String id;
     private Date date;
     private Customer customer;
     private Address address;
@@ -26,7 +26,7 @@ public class WorkItem {
         isDone = done;
     }
 
-    public WorkItem(Integer id, Date date, String typeOfWork, double timeOfWork, double price, Customer customer, Address address, String comment) {
+    public WorkItem(/*Integer id, */Date date, String typeOfWork, double timeOfWork, double price, Customer customer, Address address, String comment) {
         this.id = id;
         this.date = date;
         this.typeOfWork = typeOfWork;
@@ -38,6 +38,10 @@ public class WorkItem {
         this.isDone  = false;
     }
 
+
+    public void setId(String id){
+        this.id = id;
+    }
     public double getPrice() {
         return price;
     }
@@ -62,7 +66,7 @@ public class WorkItem {
         this.timeOfWork = timeOfWork;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
     public Date getDate() {

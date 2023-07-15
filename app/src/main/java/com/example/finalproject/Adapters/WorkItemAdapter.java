@@ -26,9 +26,9 @@ import java.util.Map;
 public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkViewHolder> {
 
     private Context context;
-    private Map<Integer, WorkItem> workItemsMap;
+    private Map<String, WorkItem> workItemsMap;
 
-    public WorkItemAdapter(Context context, Map<Integer, WorkItem> workItemsMap){
+    public WorkItemAdapter(Context context, Map<String, WorkItem> workItemsMap){
         this.context = context;
         this.workItemsMap = workItemsMap;
     }
@@ -45,35 +45,36 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
     @Override
     public void onBindViewHolder(@NonNull WorkViewHolder holder, int position) {
         WorkItem workItem = getItem(position);
-        Customer customer = workItem.getCustomer();
-        if(customer != null){
-            holder.customer_name.setText(customer.getName());
-            holder.phone.setText(customer.getPhone());
+        if(workItem != null) {
+            Customer customer = workItem.getCustomer();
+            if (customer != null) {
+                holder.customer_name.setText(customer.getName());
+                holder.phone.setText(customer.getPhone());
+            }
+            holder.address.setText(workItem.getAddress() + "");
+            holder.confirmIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "confirm", Toast.LENGTH_SHORT).show();
+                    workItem.setIsDone(true);
+                    holder.card.setBackgroundColor(context.getColor(R.color.brightGreen));
+                    DataManager.getInstance().updateWorkOrder(workItem);
+                }
+            });
+            holder.cancelIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "cancel", Toast.LENGTH_SHORT).show();
+                    workItem.setIsDone(false);
+                    holder.card.setBackgroundColor(context.getColor(R.color.brightRed));
+                    DataManager.getInstance().updateWorkOrder(workItem);
+                }
+            });
         }
-        holder.address.setText(workItem.getAddress() + "");
-        holder.confirmIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "confirm", Toast.LENGTH_SHORT).show();
-                workItem.setIsDone(true);
-                holder.card.setBackgroundColor(context.getColor(R.color.brightGreen));
-                DataManager.getInstance().updateWorkOrder(workItem);
-            }
-        });
-        holder.cancelIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "cancel", Toast.LENGTH_SHORT).show();
-                workItem.setIsDone(false);
-                holder.card.setBackgroundColor(context.getColor(R.color.brightRed));
-                DataManager.getInstance().updateWorkOrder(workItem);
-            }
-        });
-
         //holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }
 
-    public void updateWorkItemsMap(/*ArrayList<WorkItem> workItems*/ Map<Integer, WorkItem> workItemsMap) {
+    public void updateWorkItemsMap(/*ArrayList<WorkItem> workItems*/ Map<String, WorkItem> workItemsMap) {
         //this.workItems = workItems;
         this.workItemsMap = workItemsMap;
         notifyDataSetChanged();
@@ -87,7 +88,7 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
 
     private WorkItem getItem(int position) {
         //return this.workItems.get(position);
-        return this.workItemsMap.get(position);
+        return new ArrayList<WorkItem>(workItemsMap.values()).get(position);
     }
 
     public class WorkViewHolder extends RecyclerView.ViewHolder {
