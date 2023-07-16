@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".Fragments.NewWorkFormFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_drop_down_frame"
+                android:theme="@style/ll_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/type_of_work_txt_view"
+                    android:text="@string/type_of_work"
+                    style="@style/text_view"/>
+
+                <Spinner
+                    android:id="@+id/work_type_dropdown"
+                    style="@style/spinner_style"
+                    android:background="@drawable/drop_down_bg"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_duration_estimated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_drop_down_frame"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/duration_estimated_txt2_view"
+                    android:text="@string/duration_of_time"
+                    style="@style/text_view" />
+
+                <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_below="@id/duration_estimated_txt2_view"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/hours_input"
+                        android:layout_width="100dp"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
+                        android:background="@drawable/edit_text_bg"
+                        android:hint="@string/hours"
+                        style="@style/input_center"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:theme="@style/ll_horizontal"
+                android:id="@+id/ll_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_duration_estimated"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/price"
+                    style="@style/text_view" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_price"
+                    android:layout_width="100dp"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789.,"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="00"
+                    style="@style/input_center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ll_price"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sectionLabel"
+                    android:text="@string/create_new_customer"
+                    style="@style/text_view"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/sectionSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    style="@style/input_int"
+                    android:checked="false"
+                    android:background="@drawable/edit_text_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_search_customer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ll_checkbox"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/customer_name"
+                    style="@style/text_view" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:queryHint="Search customer"
+                    android:background="@drawable/edit_text_bg"
+                    style="@style/input_int"
+                    />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/customer_search_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true"
+                    android:visibility="gone">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/customerRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_new_customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_search_customer"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_customer_name"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.7"
+                        android:inputType="text"
+                        android:background="@drawable/edit_text_bg"
+                        android:hint="@string/customer_name"
+                        style="@style/input_start"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:id="@+id/ll_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="phone"
+                            android:theme="@style/text_view" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Spinner
+                            android:id="@+id/phone_dropdown"
+                            android:layout_width="0dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="0.2"
+                            style="@style/spinner_style"
+                            android:background="@drawable/drop_down_bg"/>
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:maxLength="7"
+                            android:inputType="phone"
+                            android:background="@drawable/edit_text_bg"
+                            style="@style/input_start"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:id="@+id/ll_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/ll_phone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address"
+                        android:theme="@style/text_view" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompleteLocation"
+                            android:layout_width="match_parent"
+                            android:hint="search location"
+                            android:inputType="textAutoComplete"
+                            android:background="@drawable/edit_text_bg"
+                            style="@style/input_start"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_new_customer"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comment"
+                    android:theme="@style/text_view" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_comment"
+                    android:background="@drawable/edit_text_bg"
+                    style="@style/input_text_area"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:theme="@style/ll_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_comment">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bg"
+                    android:hint="@string/confirm"
+                    android:textColorHint="@color/white" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+<!--        <item-->
+<!--            android:id="@+id/nav_home"-->
+<!--            android:title="@string/home"-->
+<!--            android:icon="@drawable/home_icon"/>-->
+
+        <item
+            android:id="@+id/nav_create_new_work"
+            android:title="@string/create_new_work"
+            android:icon="@drawable/plan_workbg"/>
+
+        <item
+            android:id="@+id/nav_my_works"
+            android:title="@string/plan_work"
+            android:icon="@drawable/new_worknbg"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="@string/profile">
+            <menu>
+                <item
+                    android:id="@+id/nav_login"
+                    android:icon="@drawable/logout_icon"
+                    android:title="@string/logout"/>
+
+            </menu>
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="@string/communication">
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/share_icon"
+                    android:title="Share"/>
+
+<!--                <item-->
+<!--                    android:id="@+id/nav_rate"-->
+<!--                    android:icon="@drawable/share_icon"-->
+<!--                    android:title="@string/rate_us"/>-->
+            </menu>
+        </item>
+    </group>
+</menu>

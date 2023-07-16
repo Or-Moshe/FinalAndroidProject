@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="2dp"
+                android:color="#ECEFF3" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <!-- Icon -->
+<!--    <item android:drawable="@drawable/arrow_down_icon">-->
+<!--        <padding-->
+<!--            android:top="8dp"-->
+<!--            android:bottom="8dp"-->
+<!--            android:="8dp"-->
+<!--            android:right="8dp" />-->
+<!--    </item>-->
+
+</layer-list>

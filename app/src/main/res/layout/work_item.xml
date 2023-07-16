@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="4dp"
+    android:elevation="8dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/ll_customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/customer_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/customer_name_adapter"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/customer_name_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:maxLines="2"
+                android:labelFor="@string/customer_name_adapter"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_customer_name">
+
+            <TextView
+                android:id="@+id/phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/phone_adapter"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/phone_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_phone">
+
+            <TextView
+                android:id="@+id/address_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/address_adapter"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/address_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:maxLines="2"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_duration_estimated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_address">
+
+            <TextView
+                android:id="@+id/duration_estimated_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/duration_estimated_adapter"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/duration_estimated_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:maxLines="1"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/ll_duration_estimated">
+
+            <!-- Other views or layouts within the parent LinearLayout -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Views or layouts within the child LinearLayout -->
+                <!-- Place other views or layouts before the buttons if needed -->
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/confirm_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/confirm_green_png"/>
+
+                <ImageView
+                    android:layout_gravity="end"
+                    android:id="@+id/cancel_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cancel_red_png" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

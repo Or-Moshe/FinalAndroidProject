@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="work_types_array">
+        <item>new garden</item>
+        <item>maintenance</item>
+    </string-array>
+
+    <string-array name="phone_array">
+        <item>050</item>
+        <item>052</item>
+        <item>053</item>
+        <item>054</item>
+    </string-array>
+
+</resources>
