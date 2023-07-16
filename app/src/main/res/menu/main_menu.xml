@@ -10,12 +10,12 @@
         <item
             android:id="@+id/nav_create_new_work"
             android:title="@string/create_new_work"
-            android:icon="@drawable/new_work_icon"/>
+            android:icon="@drawable/plan_workbg"/>
 
         <item
             android:id="@+id/nav_my_works"
             android:title="@string/plan_work"
-            android:icon="@drawable/works_schedule_icon"/>
+            android:icon="@drawable/new_worknbg"/>
     </group>
 
     <group android:checkableBehavior="single">

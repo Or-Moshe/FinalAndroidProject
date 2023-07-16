@@ -39,13 +39,13 @@ public class LoginActivity extends AppCompatActivity {
 
         viewPager.setAdapter(loginAdapter);
 
-        googleBtn.setTranslationY(300);
-        googleBtn.setAlpha(100);
+        //googleBtn.setTranslationY(300);
+        //googleBtn.setAlpha(100);
 
         tabLayout.setTranslationY(300);
         tabLayout.setAlpha(1);
 
-        googleBtn.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
+        //googleBtn.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         tabLayout.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -70,6 +70,6 @@ public class LoginActivity extends AppCompatActivity {
     private void findViews(){
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         viewPager = (ViewPager2)findViewById(R.id.view_pager);
-        googleBtn = (FloatingActionButton)findViewById(R.id.fab_google);
+        //googleBtn = (FloatingActionButton)findViewById(R.id.fab_google);
     }
 }
