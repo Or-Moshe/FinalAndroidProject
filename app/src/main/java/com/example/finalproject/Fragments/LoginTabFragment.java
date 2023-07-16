@@ -87,6 +87,11 @@ public class LoginTabFragment extends Fragment {
                                             Log.d("TAG", "onDataRetrieved: "+documentList);
                                             startActivity(new Intent(getContext(), MainActivity.class));
                                         }
+
+                                        @Override
+                                        public void onDataRetrievedFailed(Exception e) {
+                                            Log.e("TAG", "onDataRetrievedFailed: "+e);
+                                        }
                                     });
 
                                 }else{
@@ -129,7 +134,6 @@ public class LoginTabFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("TAG", "onTextChanged: ");
                 String input = s.toString();
                 isPassValid = helper.validatePassword(editTextPassword, input, MIN_PASS_LEN, "Minimum " + MIN_PASS_LEN + " characters required");
                 disableBtn();

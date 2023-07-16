@@ -88,7 +88,7 @@ public class NewWorkFormFragment extends Fragment{
 
     private AutoCompleteTextView autoCompleteLocation;
     // form values
-    private TextInputEditText newCustomerNameEditText, priceEditText, commentEditText, phoneEditText;
+    private TextInputEditText newCustomerNameEditText, priceEditText, commentEditText, phoneEditText, hoursEditText;
     private String typeOfWork, phonePrefix;
     private NumberPicker hoursOfWorkPicker, minutesOfWorkPicker;
     private Boolean isNewCustomer = false;
@@ -175,10 +175,15 @@ public class NewWorkFormFragment extends Fragment{
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!validateForm()){
+                    Toast.makeText(getContext(), getString(R.string.form_not_valid), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 createWoFromForm();
                 DataManager.getInstance().addNewDocument(workItem, new DocumentCreatedListener() {
                     @Override
                     public void onDocumentCreated(String documentId) {
+                        Log.d("TAG", "saved to document success : " + workItem);
                         requireActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame_layout, new WorksFormFragment())
                             .commit();
@@ -205,6 +210,26 @@ public class NewWorkFormFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("TAG", "onCreate: ");
+    }
+
+    private Boolean validateForm(){
+        if(hoursEditText.getText().toString().isEmpty()){
+            return false;
+        }
+        if(priceEditText.getText().toString().isEmpty()){
+            return false;
+        }
+        if(isNewCustomer){
+            if(phoneEditText.getText().toString().isEmpty() || newCustomerNameEditText.getText().toString().isEmpty() ||autoCompleteLocation.getText().toString().isEmpty()){
+                return false;
+            }
+        }
+        else{
+            if(customerAdapter.getSelectedCustomer() == null){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void setSpinnersListeners() {
@@ -235,38 +260,33 @@ public class NewWorkFormFragment extends Fragment{
     }
 
     private void createWoFromForm(){
-        int hoursOfWorkVal = hoursOfWorkPicker.getValue();
-        int minutesOfWorkVal = minutesOfWorkPicker.getValue();
-        double timeOfWork = hoursOfWorkVal * 10.0 + minutesOfWorkVal;
+        //int hoursOfWorkVal = hoursOfWorkPicker.getValue();
+        //int minutesOfWorkVal = minutesOfWorkPicker.getValue();
+        String hoursStr = hoursEditText.getText().toString();
+        //double timeOfWork = hoursOfWorkVal * 10.0 + minutesOfWorkVal;
         String priceStr = priceEditText.getText().toString();
         double priceVal = !priceStr.isEmpty() ? Double.parseDouble(priceStr): 0;
         Customer customer;
         Address address;
         if(isNewCustomer){
             String phone = phonePrefix + phoneEditText.getText().toString();
-            //String street = streetEditText.getText().toString();
-            customer = new Customer(newCustomerNameEditText.getText().toString(), phone, 0);
+            String customerName = newCustomerNameEditText.getText().toString();
+            String addressStr = autoCompleteLocation.getText().toString();
+            customer = new Customer(customerName, phone, addressStr, 0);
+
         }
         else{
             customer = customerAdapter.getSelectedCustomer();
         }
 
         String comment = commentEditText.getText().toString();
-        workItem = new WorkItem(/*DataManager.getInstance().getWorkItemsMap().size(),*/ null, typeOfWork, timeOfWork, priceVal, customer, null, comment);
-    }
-
-    private void settingDefaultValues(){
-        hoursOfWorkPicker.setMinValue(0);
-        minutesOfWorkPicker.setMinValue(0);
-
-        hoursOfWorkPicker.setMaxValue(10);
-        hoursOfWorkPicker.setMaxValue(10);
-
+        workItem = new WorkItem(/*DataManager.getInstance().getWorkItemsMap().size(),*/ null, typeOfWork, hoursStr, priceVal, customer, null, comment);
     }
 
     private void findViews(View view){
-        hoursOfWorkPicker = view.findViewById(R.id.hours_picker);
-        minutesOfWorkPicker = view.findViewById(R.id.minutes_picker);
+        //hoursOfWorkPicker = view.findViewById(R.id.hours_picker);
+        //minutesOfWorkPicker = view.findViewById(R.id.minutes_picker);
+        hoursEditText = view.findViewById(R.id.hours_input);
         priceEditText = view.findViewById(R.id.input_price);
         newCustomerNameEditText = view.findViewById(R.id.input_customer_name);
         llNewCustomer = view.findViewById(R.id.ll_new_customer);

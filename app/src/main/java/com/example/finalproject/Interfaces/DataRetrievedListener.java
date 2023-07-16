@@ -7,5 +7,5 @@ import java.util.List;
 public interface DataRetrievedListener {
 
     void onDataRetrieved(List<DocumentSnapshot> documentList);
-
+    void onDataRetrievedFailed(Exception e);
 }

@@ -13,7 +13,7 @@ public class WorkItem {
     private Date date;
     private Customer customer;
     private Address address;
-    private String typeOfWork, comment;
+    private String typeOfWork, comment, timeOfWorkStr;
     private double timeOfWork, price;
     private Boolean isDone;
     public WorkItem(){}
@@ -26,11 +26,11 @@ public class WorkItem {
         isDone = done;
     }
 
-    public WorkItem(/*Integer id, */Date date, String typeOfWork, double timeOfWork, double price, Customer customer, Address address, String comment) {
+    public WorkItem(/*Integer id, */Date date, String typeOfWork, String timeOfWorkStr, double price, Customer customer, Address address, String comment) {
         this.id = id;
         this.date = date;
         this.typeOfWork = typeOfWork;
-        this.timeOfWork = timeOfWork;
+        this.timeOfWorkStr = timeOfWorkStr;
         this.price = price;
         this.customer = customer;
         this.address = address;
@@ -38,6 +38,9 @@ public class WorkItem {
         this.isDone  = false;
     }
 
+    public String getTimeOfWorkStr() {
+        return timeOfWorkStr;
+    }
 
     public void setId(String id){
         this.id = id;
@@ -104,14 +107,16 @@ public class WorkItem {
     @Override
     public String toString() {
         return "WorkItem{" +
-                "id=" + id +
-                ", price=" + price +
+                "id='" + id + '\'' +
                 ", date=" + date +
                 ", customer=" + customer +
                 ", address=" + address +
                 ", typeOfWork='" + typeOfWork + '\'' +
                 ", comment='" + comment + '\'' +
+                ", timeOfWorkStr='" + timeOfWorkStr + '\'' +
                 ", timeOfWork=" + timeOfWork +
+                ", price=" + price +
+                ", isDone=" + isDone +
                 '}';
     }
 }

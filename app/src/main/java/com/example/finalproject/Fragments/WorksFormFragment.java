@@ -1,6 +1,5 @@
 package com.example.finalproject.Fragments;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.finalproject.Adapters.WorkItemAdapter;
 import com.example.finalproject.DataManager;
@@ -26,10 +24,7 @@ import com.example.finalproject.R;
 import com.example.finalproject.ViewModels.WorksFormViewModel;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 
 public class WorksFormFragment extends Fragment {
 
@@ -63,7 +58,6 @@ public class WorksFormFragment extends Fragment {
         adapter = new WorkItemAdapter(getContext(), viewModel.getWorkItemsMap().getValue());
         mainLSTWorks.setAdapter(adapter);
         viewModel.getWorkItemsMap().observe(getViewLifecycleOwner(), observer);
-
         return root;
     }
 
@@ -71,13 +65,12 @@ public class WorksFormFragment extends Fragment {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //DataManager.getInstance().setWorkItemsInFirestore();
-                //observer.onChanged(DataManager.getInstance().getWorkItemsMap());
                 DataManager.getInstance().deleteDocuments(new DocumentDeletedListener() {
                     @Override
                     public void onDocumentDeleted(String documentId) {
                         Log.d("TAG", "onDocumentDeleted: "+ documentId);
-                        viewModel.onDocumentDeleted(documentId);
+                        int index = viewModel.onDocumentDeleted(documentId);
+                        adapter.notifyItemRemoved(index);
                     }
 
                     @Override
@@ -88,7 +81,7 @@ public class WorksFormFragment extends Fragment {
             }
         });
     }
-        private void createLinearLayout(){
+    private void createLinearLayout(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mainLSTWorks.setLayoutManager(linearLayoutManager);

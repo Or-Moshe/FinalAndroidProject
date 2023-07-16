@@ -12,6 +12,7 @@
     <string name="enter_email">Please Enter email</string>
     <string name="enter_password">Please Enter password</string>
     <string name="auth_failed">Authentication Failed</string>
+    <string name="form_not_valid">Please fill correctly the form</string>
 
     <!-- Succeed messages-->
     <string name="acc_created">Account Created</string>
@@ -47,5 +48,6 @@
     <string name="phone_adapter">phone:</string>
     <string name="duration_estimated_adapter">duration estimated:</string>
     <string name="save">save</string>
+    <string name="logout">logout</string>
 
 </resources>

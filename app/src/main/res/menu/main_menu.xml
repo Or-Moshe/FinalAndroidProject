@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:title="@string/home"
-            android:icon="@drawable/home_icon"/>
+<!--        <item-->
+<!--            android:id="@+id/nav_home"-->
+<!--            android:title="@string/home"-->
+<!--            android:icon="@drawable/home_icon"/>-->
 
         <item
             android:id="@+id/nav_create_new_work"
             android:title="@string/create_new_work"
-            android:icon="@drawable/home_icon"/>
+            android:icon="@drawable/new_work_icon"/>
 
         <item
             android:id="@+id/nav_my_works"
             android:title="@string/plan_work"
-            android:icon="@drawable/home_icon"/>
+            android:icon="@drawable/works_schedule_icon"/>
     </group>
 
     <group android:checkableBehavior="single">
@@ -24,7 +24,7 @@
                 <item
                     android:id="@+id/nav_login"
                     android:icon="@drawable/logout_icon"
-                    android:title="@string/login"/>
+                    android:title="@string/logout"/>
 
             </menu>
         </item>

@@ -51,11 +51,13 @@ public class WorksFormViewModel extends ViewModel {
 
     }
 
-    public void onDocumentDeleted(String documentId) {
+    public int onDocumentDeleted(String documentId) {
         Map<String, WorkItem> workItemMap = mWorkItemsMap.getValue();
+        int index = new ArrayList<>(workItemMap.keySet()).indexOf(documentId);
         workItemMap.remove(documentId);
         mWorkItemsMap.setValue(workItemMap);
         Log.d("TAG", "onDocumentDeleted"+ mWorkItemsMap);
+        return index;
     }
 
     public LiveData<Map<String, WorkItem>> getWorkItemsMap() {
@@ -68,9 +70,15 @@ public class WorksFormViewModel extends ViewModel {
                 for (DocumentSnapshot documentSnapshot : documentList) {
                     WorkItem workItem = documentSnapshot.toObject(WorkItem.class);
                     workItemMap.put(workItem.getId(), workItem);
+
                     Log.d("TAG", "onDataRetrieved: "+ workItemMap);
                 }
                 mWorkItemsMap.setValue(workItemMap);
+            }
+
+            @Override
+            public void onDataRetrievedFailed(Exception e) {
+                Log.e("onDataRetrievedFailed", "Error retrieving data", e);
             }
         });
         Log.d("TAG", "onDataRetrieved:mWorkItemsMap"+ mWorkItemsMap);

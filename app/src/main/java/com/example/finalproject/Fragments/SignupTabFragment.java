@@ -48,15 +48,6 @@ public class SignupTabFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         setEditTextListeners();
 
-
-
-        /*if(TextUtils.isEmpty(email)){
-            Toast.makeText(root.getContext(), getString(R.string.enter_email), Toast.LENGTH_LONG).show();
-        }
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(root.getContext(), getString(R.string.enter_password), Toast.LENGTH_LONG).show();
-        }*/
-
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,21 +57,20 @@ public class SignupTabFragment extends Fragment {
                 password = String.valueOf(editTextPassword.getText());
                 progressIndicator.setVisibility(View.VISIBLE);
 
-
                 auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
-                                    progressIndicator.setVisibility(View.GONE);
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(root.getContext(), getString(R.string.acc_created), Toast.LENGTH_SHORT).show();
+                                progressIndicator.setVisibility(View.GONE);
 
-                                }else{
-                                    Log.e("TAG", "signup failed: ", task.getException());
-                                    Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
+                            }else{
+                                Log.e("TAG", "signup failed: ", task.getException());
+                                Toast.makeText(root.getContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
-                        });
+                        }
+                    });
             }
         });
         return root;

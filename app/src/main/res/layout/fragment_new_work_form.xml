@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp">
 
@@ -46,63 +45,29 @@
                 android:layout_below="@id/ll_drop_down_frame"
                 android:orientation="vertical">
 
-                <NumberPicker
-                    android:id="@+id/hours_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/duration_estimated_txt2_view"
+                    android:text="@string/duration_of_time"
+                    style="@style/text_view" />
 
-                <NumberPicker
-                    android:id="@+id/minutes_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-<!--                <TextView-->
-<!--                    android:id="@+id/duration_estimated_txt2_view"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="@string/duration_of_time"-->
-<!--                    style="@style/text_view" />-->
+                <LinearLayout
+                    android:theme="@style/ll_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_below="@id/duration_estimated_txt2_view"
+                    android:orientation="horizontal">
 
-<!--                <LinearLayout-->
-<!--                    android:theme="@style/ll_horizontal"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:layout_below="@id/duration_estimated_txt2_view"-->
-<!--                    android:orientation="horizontal">-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/hours_input"
+                        android:layout_width="100dp"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
+                        android:background="@drawable/edit_text_bg"
+                        android:hint="@string/hours"
+                        style="@style/input_center"/>
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/duration_estimated_txt_view"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="0.4"-->
-<!--                        android:text="@string/hours"-->
-<!--                        style="@style/text_view" />-->
-
-<!--                    <NumberPicker-->
-<!--                        android:id="@+id/hours_picker"-->
-<!--                        style="@style/number_picker"  />-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:orientation="horizontal">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginStart="30dp"-->
-<!--                            android:layout_weight="0.5"-->
-<!--                            android:text="@string/minutes"-->
-<!--                            android:theme="@style/text_view" />-->
-
-<!--                        <NumberPicker-->
-<!--                            android:id="@+id/minutes_picker"-->
-<!--                            style="@style/number_picker" />-->
-
-
-<!--                    </LinearLayout>-->
-<!--                </LinearLayout>-->
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

@@ -68,31 +68,8 @@ public class DataManager {
 
     public Map<String, WorkItem> getWorkItemsMap(){
         Log.d("TAG", "getWorkItemsMap: " + workItemsMap.size());
-        return retrieveDataFromFirestore();
-    }
-
-    public void setWorkItemsInFirestore(){
-        Query query = workItemsCollectionRef.whereEqualTo("isDone", true);
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot querySnapshot) {
-                        // Iterate through the documents returned by the query
-                        for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
-                            // Delete each document
-                            deleteWorkItem(documentSnapshot);
-                        }
-                        //fixKeysMap();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle the error
-                    }
-                });
-
+        return workItemsMap;
+        //return retrieveDataFromFirestore();
     }
 
     public void deleteDocuments(final DocumentDeletedListener listener){
@@ -122,7 +99,6 @@ public class DataManager {
     }
 
     public String addNewDocument(WorkItem workItem, final DocumentCreatedListener listener){
-        // Create a new document in the collection and set data
         DocumentReference newDocumentRef = workItemsCollectionRef.document();
         String documentId = newDocumentRef.getId(); // Get the auto-generated document ID
         workItem.setId(documentId);
@@ -130,16 +106,12 @@ public class DataManager {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Data set to the subcollection successfully
-                        Log.d("TAG", "saved to document success : " + workItem);
                         listener.onDocumentCreated(documentId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Failed to set data to the subcollection
-                        Log.e("TAG", "saved to document failed : " + workItem);
                         listener.onDocumentCreationFailed(e);
                     }
                 });
@@ -148,7 +120,6 @@ public class DataManager {
 
 
     public Map<String, WorkItem> retrieveDataFromFirestore(FirebaseUser user, DataRetrievedListener listener) {
-        // Retrieve the collection from Firestore
         this.user = user;
         this.userDocumentRef = db.collection(Constants.DBKeys.USERS).document(user.getUid());
         this.workItemsCollectionRef = userDocumentRef.collection(Constants.DBKeys.WORK_ITEMS);
@@ -162,21 +133,10 @@ public class DataManager {
                         fillWorkItemMap(documentSnapshot);
                         fillCustomerMap(documentSnapshot);
                     }
-                    /*if (querySnapshot != null) {
-                        for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                            if (queryDocumentSnapshot.exists()) {
-                                // Document exists, retrieve the desired fields
-                                fillWorkItemMap(queryDocumentSnapshot);
-                                fillCustomerMap(queryDocumentSnapshot);
-                            }
-                        }
-                    }*/
-
-                    // Pass the retrieved data to the listener
-                    Log.d("TAG", "Pass the retrieved data to the listener: ");
                     listener.onDataRetrieved(documentList);
                 } else {
-                    Log.e("Firestore", "Error retrieving data", task.getException());
+
+                    listener.onDataRetrievedFailed(task.getException());
                 }
             });
         userDocumentRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -188,10 +148,6 @@ public class DataManager {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    // Document data is available in the snapshot
-                    // Extract the updated data and perform necessary actions
-                    String updatedField = snapshot.getString("field_name");
-                    // Update your UI or perform other operations based on the updated data
                 } else {
                     Log.d("Firestore", "Current data: null");
                 }
@@ -200,7 +156,7 @@ public class DataManager {
         return workItemsMap;
     }
 
-    private Map<String, WorkItem> retrieveDataFromFirestore() {
+    /*private Map<String, WorkItem> retrieveDataFromFirestore() {
         workItemsCollectionRef.get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -210,16 +166,7 @@ public class DataManager {
                             fillWorkItemMap(documentSnapshot);
                             fillCustomerMap(documentSnapshot);
                         }
-                        /*if (querySnapshot != null) {
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                                if (queryDocumentSnapshot.exists()) {
 
-                                    // Document exists, retrieve the desired fields
-                                    fillWorkItemMap(queryDocumentSnapshot);
-                                    fillCustomerMap(queryDocumentSnapshot);
-                                }
-                            }
-                        }*/
                     } else {
                         Log.e("Firestore", "Error retrieving data", task.getException());
                     }
@@ -243,7 +190,7 @@ public class DataManager {
             }
         });
         return workItemsMap;
-    }
+    }*/
 
     public void updateWorkOrder(WorkItem workItem) {
         if (workItem != null) {
@@ -253,14 +200,14 @@ public class DataManager {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Update successful
-                        Log.d("TAG", "onSuccess: ");
+                        Log.d("TAG", "updateWorkOrder onSuccess: ");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Update failed
-                        Log.d("TAG", "onFailure: ");
+                        Log.d("TAG", "updateWorkOrder onFailure: ");
                     }
                 });
         }

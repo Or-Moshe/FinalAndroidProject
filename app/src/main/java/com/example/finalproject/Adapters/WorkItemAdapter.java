@@ -38,7 +38,6 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
     public WorkItemAdapter.WorkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("passed VT:", "" + viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.work_item, parent, false);
-
         return new WorkViewHolder(view);
     }
 
@@ -49,9 +48,11 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
             Customer customer = workItem.getCustomer();
             if (customer != null) {
                 holder.customer_name.setText(customer.getName());
+                holder.address.setText(customer.getAddress());
                 holder.phone.setText(customer.getPhone());
             }
-            holder.address.setText(workItem.getAddress() + "");
+            holder.duration_estimated.setText(workItem.getTimeOfWorkStr());
+            //holder.address.setText(workItem.getAddress() + "");
             holder.confirmIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -71,28 +72,23 @@ public class WorkItemAdapter extends RecyclerView.Adapter<WorkItemAdapter.WorkVi
                 }
             });
         }
-        //holder.duration_estimated.setText(workItem.getDuration_estimated() + "");
     }
 
-    public void updateWorkItemsMap(/*ArrayList<WorkItem> workItems*/ Map<String, WorkItem> workItemsMap) {
-        //this.workItems = workItems;
+    public void updateWorkItemsMap(Map<String, WorkItem> workItemsMap) {
         this.workItemsMap = workItemsMap;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        //return this.workItems == null ? 0 : workItems.size();
         return this.workItemsMap == null ? 0 : workItemsMap.size();
     }
 
     private WorkItem getItem(int position) {
-        //return this.workItems.get(position);
         return new ArrayList<WorkItem>(workItemsMap.values()).get(position);
     }
 
     public class WorkViewHolder extends RecyclerView.ViewHolder {
-
         private MaterialTextView customer_name;
         private MaterialTextView address;
         private MaterialTextView phone;
