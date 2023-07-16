@@ -5,11 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.WorksFormFragment">
 
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:text="Your Planning"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_LST_works"
         android:layout_width="match_parent"
         android:layout_height="690dp"
-        tools:listitem="@layout/work_item" />
+        tools:listitem="@layout/work_item"
+        android:layout_below="@id/ll_title"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save_btn"
